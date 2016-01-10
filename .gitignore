@@ -30,3 +30,9 @@
 
 # Debug files
 *.dSYM/
+
+# Data directory
+data/
+
+# Executable
+toporobot2survex

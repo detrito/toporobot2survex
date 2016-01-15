@@ -9,30 +9,29 @@
 #include "survey.h"
 
 // for array push and pop
-int top, status;
+int status;
 
 // push a dynamic allocated measurement to the end of
 // the pointer array
-void push_measure(Survey *survey, Measure *measure) {
-	if (top == (MAX_MEASURES-1))
+void survey_push_measure(Survey *survey, Measure *measure) {
+	if (survey->top == (MAX_MEASURES-1))
 		status = 0;
 	else
 	{
 		status = 1;
-		top++;
-		(survey->survey_measures[top]) = measure;
+		survey->top++;
+		(survey->survey_measures[survey->top]) = measure;
 	}
 }
 
-
 // fprintf the survey data structure
-void write_survey(Survey *survey) {
+void survey_print(Survey *survey) {
 	printf("\n________\n");
 	printf("Survey data:\n");
 	printf("%i - %s\n",survey->serie, survey->name);
 	printf("Survey measures:\n");
 	
-	for(int i=1; i<=top; i++) {
+	for(int i=1; i<=survey->top; i++) {
 		printf("[%f,%f,%f] ",
 			survey->survey_measures[i]->azimuth,
 			survey->survey_measures[i]->dip,
@@ -43,10 +42,10 @@ void write_survey(Survey *survey) {
 }
 
 // free memory
-void close_survey(Survey *survey) {
+void survey_close(Survey *survey) {
 	printf("closing survey\n");
-	for(top; top>0; top--) {
-		free(survey->survey_measures[top]);
+	for(survey->top; survey->top>0; survey->top--) {
+		free(survey->survey_measures[survey->top]);
 	}
 	free(survey);
 }

@@ -6,7 +6,8 @@
 #ifndef SURVEY_H
 #define SURVEY_H
 
-#define MAX_MEASURES 1024
+#define MAX_MEASURES 512
+#define MAX_SURVEYS 256
 
 typedef struct {
 	int start;
@@ -29,13 +30,24 @@ typedef struct {
 typedef struct {
 	int serie;
 	int top;
-	char* name;
+	char name[128];
 	
 	Measure *survey_measures[MAX_MEASURES];
 } Survey;
 
-void survey_push_measure(Survey *survey, Measure *measure);
+typedef struct {
+	char name[128];
+	int top;
+	Survey *current_survey;
+	Survey *surveys[MAX_SURVEYS];
+} Cave;
+
+int survey_push_measure(Survey *survey, Measure *measure);
 void survey_print(Survey *survey);
 void survey_close(Survey *survey);
+
+int cave_push_survey(Cave *cave, Survey *survey);
+void cave_print(Cave *cave);
+void cave_close(Cave *cave);
 
 #endif // survey_h

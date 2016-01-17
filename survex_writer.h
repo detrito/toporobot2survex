@@ -10,6 +10,9 @@
 #include <stdarg.h>
 #include "survey.h"
 
+char buffer[1024*10];
+char filename[128];
+
 typedef struct {
 	float data[5];
 } SurvexData;
@@ -28,5 +31,7 @@ typedef struct {
 
 int appendToStr(char *target, size_t targetSize, const char * restrict format, ...);
 void survex_write_survey(Survey *survey);
+void survex_write_main(Cave *cave);
+void survex_write_cave(Cave *cave);
 
 #endif // survex_writer_h

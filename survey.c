@@ -13,7 +13,7 @@ int status;
 
 // push a dynamic allocated measurement to the end of
 // the pointer array
-void survey_push_measure(Survey *survey, Measure *measure) {
+int survey_push_measure(Survey *survey, Measure *measure) {
 	if (survey->top == (MAX_MEASURES-1))
 		status = 0;
 	else
@@ -22,6 +22,7 @@ void survey_push_measure(Survey *survey, Measure *measure) {
 		survey->top++;
 		(survey->survey_measures[survey->top]) = measure;
 	}
+	return status;
 }
 
 // fprintf the survey data structure
@@ -48,4 +49,27 @@ void survey_close(Survey *survey) {
 		free(survey->survey_measures[survey->top]);
 	}
 	free(survey);
+}
+
+int cave_push_survey(Cave *cave, Survey *survey) {
+	if (cave->top == (MAX_SURVEYS-1))
+		status = 0;
+	else
+	{
+		status = 1;
+		cave->top++;
+		(cave->surveys[cave->top]) = survey;
+		cave->current_survey = survey;
+	}
+}
+
+void cave_print(Cave *cave) {
+}
+
+void cave_close(Cave *cave) {
+	printf("closing cave\n");
+	for(cave->top; cave->top>0; cave->top--) {
+		free(cave->surveys[cave->top]);
+	}
+	free(cave);	
 }

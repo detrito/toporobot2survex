@@ -15,35 +15,31 @@
 #define VERSION "0.0.1"
 #define FIELD_ITEMS 11
 
-/* STATIC */
-
-static const char filename[] = "data/input_unix.tab"; // input file path
-
 int c1 = 0; // current or last first-column value
-Survey *current_survey; // survey pointer for dynamic memory allocation
+
+Cave *cave;
+Survey *current_survey;
+Measure *current_measure;
 
 void ParseMeasurement(char **fields) {
 	int c2;
-	Measure *current_measure;
 		
 	c2 = atoi(fields[2]);
 	
 	// -1 at column 2: begin of a new serie
 	if( c2 == -1) {
 		// allocate the memory for the survey
-
+		printf("Alocating survey memory\n");
 		current_survey = (Survey*) malloc(sizeof (Survey));
 		current_survey->top = 0; // initialise top
 		current_survey->serie = c1; // serie number
-		current_survey->name = malloc(sizeof(char)*256); // survey name
-
 		// copy string and delete last two caracters (newline)
 		strncpy(current_survey->name, fields[10], strlen(fields[10])-1);
+		cave_push_survey(cave,current_survey);
 	}
 
 	else {
-		// allocate the memory for a measure
-		
+		// allocate the memory for a measure		
 		current_measure = (Measure*) malloc(sizeof (Measure));
 		current_measure->length = atof(fields[5]);
 		current_measure->azimuth = atof(fields[6]);
@@ -51,15 +47,18 @@ void ParseMeasurement(char **fields) {
 		current_measure->left = atof(fields[8]);
 		current_measure->right = atof(fields[9]);
 		current_measure->up = atof(fields[10]);
-		current_measure->down = atof(fields[11]);
+		current_measure->down = atof(fields[11]);	
 		
 		// push the measurement to the end of the survey's pointer array
-		survey_push_measure(current_survey,current_measure);
+		survey_push_measure(cave->current_survey,current_measure);
 		
 		printf (" measure parsed\n");
 	}
 }
 
+void ParseName(char **fields) {
+	strcpy(cave->name, fields[3]);
+}
 
 void ParseLine(char *buf) {
 	const char s[] = "\t";	// tabulator as separator
@@ -84,6 +83,7 @@ void ParseLine(char *buf) {
 	switch (c1) {
 		case -6:
 			printf("Nome entrée\n");
+				ParseName(fields);
 			break;
 		case -5:
 			printf("Coordonnée entrée\n");
@@ -116,20 +116,10 @@ void ProcessInputFile(const char *filename) {
 		i++;
 		printf("%i ",i);
 		
-		// if line contain more than 2 chars
+		// if not newline (\n contains 2 chars) 
 		if(strlen(buf) >= 2)
 		{
 			ParseLine(buf);
-		}
-		// else if newline
-		else if(!strncmp(buf, "\n", 2))
-		{
-			// if there is a survey to write
-			if(c1 >= 1) {
-				survex_write_survey(current_survey);
-				//survey_print(current_survey);
-				survey_close(current_survey);
-			}
 		}
 	}
 	
@@ -151,7 +141,14 @@ int main (int argc, char *argv[]) {
 		else if(file_exists( argv[1] )){
 			printf("processing\n");
 			
+			// initialise cave
+			cave = (Cave*) malloc(sizeof (Cave));
+			cave->top = 0;
+			
 			ProcessInputFile(argv[1]);
+			
+			survex_write_cave(cave);
+			cave_close(cave);
 			
 			return 0;
 		}

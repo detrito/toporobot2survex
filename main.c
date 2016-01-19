@@ -33,7 +33,7 @@ void ParseMeasurement(char **fields) {
 		current_survey = (Survey*) malloc(sizeof (Survey));
 		current_survey->top = 0; // initialise top
 		current_survey->serie = c1; // serie number
-		// copy string and delete last two caracters (newline)
+		// copy string and delete last caracter (newline)
 		strncpy(current_survey->name, fields[10], strlen(fields[10])-1);
 		cave_push_survey(cave,current_survey);
 	}
@@ -57,7 +57,8 @@ void ParseMeasurement(char **fields) {
 }
 
 void ParseName(char **fields) {
-	strcpy(cave->name, fields[3]);
+	// copy string and delete last caracter (newline)
+	strncpy(cave->name, fields[3], strlen(fields[3])-1);
 }
 
 void ParseLine(char *buf) {

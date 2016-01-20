@@ -12,7 +12,6 @@
 #include "functions.h"
 #include "survey.h"
 
-
 int appendToStr (char *target, size_t targetSize,
 	const char * restrict format,...) {
 	

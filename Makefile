@@ -1,8 +1,12 @@
 CC = gcc
 CCFLAGS = $(CFLAGS)
 
+#include /etc/make.conf
+#include /etc/makepkg.conf
+
 toporobot2survex: main.o functions.o toporobot_reader.o survey.o survex_writer.o
-	$(CC) $(CCFLAGS) -o toporobot2survex main.o functions.o toporobot_reader.o survey.o survex_writer.o
+	$(CC) $(CCFLAGS) -o toporobot2survex main.o functions.o toporobot_reader.o \
+		survey.o survex_writer.o
 
 main.o: main.c toporobot_reader.h survey.h survex_writer.h
 	$(CC) $(CCFLAGS) -c main.c
@@ -20,4 +24,5 @@ survex_writer.o: survex_writer.c survex_writer.h functions.h
 	$(CC) $(CCFLAGS) -c survex_writer.c
 
 clean:
-	rm toporobot2survex main.o functions.o toporobot_reader.o survey.o survex_writer.o
+	rm toporobot2survex main.o functions.o toporobot_reader.o survey.o \
+		survex_writer.o

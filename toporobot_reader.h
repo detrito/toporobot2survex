@@ -6,10 +6,6 @@
 #ifndef TOPOROBOT_READER_H
 #define TOPOROBOT_READER_H
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "functions.h"
 #include "survey.h"
 

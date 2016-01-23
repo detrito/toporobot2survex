@@ -12,28 +12,6 @@
 #include "functions.h"
 #include "survey.h"
 
-int appendToStr (char *target, size_t targetSize,
-	const char * restrict format,...) {
-	
-	va_list args;
-	char temp[targetSize];
-	int result;
-
-	va_start(args, format);
-	result = vsnprintf(temp, targetSize, format, args);
-	
-	if (result != EOF) {
-		if (strlen(temp) + strlen(target) > targetSize) {
-			fprintf(stderr, "appendToStr: target buffer not large enough to "
-				"hold additional string");
-			return 0;
-		}
-		strcat(target, temp);
-	}
-	va_end(args);
-	return result;
-}
-
 int write_buffer(char *filename) {
 	// clear file or create path
 	init_output_file(filename);
@@ -63,7 +41,7 @@ void survex_write_survey(Survey *survey)
 	
 	strcpy(buffer,"\0"); 	// empty buffer
 	appendToStr(buffer, sizeof(buffer), "*begin %d\n", survey->serie);
-	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", survey->name);
+	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", survey->name_survey);
 	
 	// append measures
 	appendToStr(buffer, sizeof(buffer),

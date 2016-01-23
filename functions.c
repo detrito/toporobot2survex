@@ -3,13 +3,13 @@
  * date: january 2016
  */
 
-
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <libgen.h>
-#include <string.h>
-#include <stdio.h>
 
 #include "functions.h"
 
@@ -47,4 +47,27 @@ int init_output_file(char *filename) {
 	else {
 		return create_path(filename);
 	}
+}	
+
+int appendToStr (char *target, size_t targetSize,
+	const char * restrict format,...) {
+	
+	va_list args;
+	char temp[targetSize];
+	int result;
+
+	va_start(args, format);
+	result = vsnprintf(temp, targetSize, format, args);
+	
+	if (result != EOF) {
+		if (strlen(temp) + strlen(target) > targetSize) {
+			fprintf(stderr, "appendToStr: target buffer not large enough to "
+				"hold additional string");
+			return 0;
+		}
+		strcat(target, temp);
+	}
+	va_end(args);
+	return result;
 }
+

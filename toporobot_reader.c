@@ -3,25 +3,27 @@
  * date: january 2016
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "toporobot_reader.h"
 
 int c1 = 0;
 
 void toporobot_parse_measurement(char **fields) {
 	int c2;
-		
+	
 	c2 = atoi(fields[2]);
 	
 	// -1 at column 2: begin of a new serie
 	if( c2 == -1) {
-		// allocate the memory for the survey
-		printf("Alocating survey memory\n");
-		current_survey = (Survey*) malloc(sizeof (Survey));
-		current_survey->top = 0; // initialise top
-		current_survey->serie = c1; // serie number
+		cave->top = c1;		
+		// pointer to the current survey
+		current_survey = cave->surveys[cave->top];
+	
 		// copy string and delete last caracter (newline)
-		strncpy(current_survey->name, fields[10], strlen(fields[10])-1);
-		cave_push_survey(cave,current_survey);
+		strncpy(current_survey->name_survey, fields[10], strlen(fields[10])-1);
 	}
 
 	else {
@@ -45,6 +47,22 @@ void toporobot_parse_measurement(char **fields) {
 void toporobot_parse_name(char **fields) {
 	// copy string and delete last caracter (newline)
 	strncpy(cave->name, fields[3], strlen(fields[3])-1);
+}
+
+void toporobot_parse_survey(char **fields) {
+	// allocate the memory for the survey
+	printf("Alocating survey memory\n");
+	current_survey = (Survey*) malloc(sizeof (Survey));
+	
+	current_survey->top = 0; // initialise top
+	current_survey->serie = atoi(fields[2]); // serie number
+	current_survey->day = atoi(fields[3]); // day
+	current_survey->month = atoi(fields[4]); // month
+	current_survey->year = atoi(fields[5]); // year	
+	strcpy(current_survey->name_person_measuring, fields[6]); // spéléomètre
+	strcpy(current_survey->name_person_drawing, fields[7]); // spéléographe
+	current_survey->declination = atoi(fields[8]); // declination (0=manual)	
+	current_survey->declination_value = atof(fields[9]); // declination (0=manual)
 }
 
 void toporobot_parse_line(char *buf) {
@@ -77,6 +95,7 @@ void toporobot_parse_line(char *buf) {
 			break;
 		case -2:
 			printf("Expé\n");
+				toporobot_parse_survey(fields);
 			break;
 		case -1:
 			printf("Code\n");

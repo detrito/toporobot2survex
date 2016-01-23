@@ -29,7 +29,7 @@ int survey_push_measure(Survey *survey, Measure *measure) {
 void survey_print(Survey *survey) {
 	printf("\n________\n");
 	printf("Survey data:\n");
-	printf("%i - %s\n",survey->serie, survey->name);
+	printf("%i - %s\n",survey->serie, survey->name_survey);
 	printf("Survey measures:\n");
 	
 	for(int i=1; i<=survey->top; i++) {

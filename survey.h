@@ -28,10 +28,21 @@ typedef struct {
 } Measure;
 
 typedef struct {
-	int serie;
 	int top;
-	char name[128];
+ 
+	int serie;	// survey id
+	char name_survey[128];
+	char name_person_measuring[128];
+	char name_person_drawing[128];
+
+	int day;
+	int month;
+	int year;
+
+	int declination; // 0=manual; 1=auto
+	float declination_value; // correction value for the declination
 	
+	// array of pointers to Measures
 	Measure *survey_measures[MAX_MEASURES];
 } Survey;
 

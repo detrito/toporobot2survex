@@ -6,8 +6,6 @@
 #ifndef SURVEX_WRITER_H
 #define SURVEX_WRITER_H
 
-#include <stdlib.h>
-#include <stdarg.h>
 #include "survey.h"
 
 char buffer[1024*10];
@@ -29,7 +27,6 @@ typedef struct {
 	SurvexPassage *container;
 } SurveyPassageContainer;
 
-int appendToStr(char *target, size_t targetSize, const char * restrict format, ...);
 void survex_write_survey(Survey *survey);
 void survex_write_main(Cave *cave);
 void survex_write_cave(Cave *cave);

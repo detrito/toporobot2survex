@@ -16,9 +16,11 @@ Survey *current_survey;
 Measure *current_measure;
 //int c1; // = 0; // current or last first-column value
 
-void toporobot_parse_measurement(char **fields);
-void toporobot_parse_name(char **fields);
-void toporobot_parse_line(char *buf);
 void toporobot_process_input_file(const char *filename);
+void toporobot_parse_line(char *buf);
+void toporobot_parse_name(char **fields);
+void toporobot_parse_survey(char **fields);
+void toporobot_parse_code(char **fields);
+void toporobot_parse_measurement(char **fields);
 
 #endif // survex_writer_h

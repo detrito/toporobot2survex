@@ -25,9 +25,8 @@ int main (int argc, char *argv[]) {
 		else if(file_exists( argv[1] )){
 			printf("processing\n");
 			
-			cave = (Cave*) malloc(sizeof (Cave));
-			cave->top = 0; // initialise top
-			
+			cave = (Cave*) malloc(sizeof (Cave) * sizeof(Survey));
+						
 			// read cave from toporobot file
 			toporobot_process_input_file(argv[1]);
 			

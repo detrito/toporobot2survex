@@ -38,7 +38,7 @@ void survex_write_survey(Survey *survey)
 	//strcpy(filename,"data/asd_");
 	//strcat(filename,survey->serie);
 	//strcat(filename,".txt");
-	
+		
 	strcpy(buffer,"\0"); 	// empty buffer
 	appendToStr(buffer, sizeof(buffer), "*begin %d\n", survey->serie);
 	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", survey->name_survey);
@@ -83,9 +83,12 @@ void survex_write_main(Cave *cave) {
 	appendToStr(buffer, sizeof(buffer), "*begin\n");
 	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", cave->name);
 	
-	for(int i=1; i<=cave->top; i++) {
-		appendToStr(buffer, sizeof(buffer), "*include surveys/%d\n",
-			cave->surveys[i]->serie);
+	for(int i=1; i<=MAX_SURVEYS; i++) {
+		printf("i = %d",i);
+		if(cave->surveys[i] != NULL) {
+			appendToStr(buffer, sizeof(buffer), "*include surveys/%d\n",
+				cave->surveys[i]->serie);
+		}
 	}
 	
 	appendToStr(buffer, sizeof(buffer), "*end\n");
@@ -93,13 +96,19 @@ void survex_write_main(Cave *cave) {
 	write_buffer(filename);
 }
 
-
 void survex_write_cave(Cave *cave) {
+	printf("Writing cave\n");
 	survex_write_main(cave);
 
-	for(int i=1; i<=cave->top; i++) {
-		printf("Writing survey %d... ", i);
-		survex_write_survey(cave->surveys[i]);
-		printf("done\n");
+	//for(int i=1; i<=cave->top; i++) {
+	for(int i=1; i<=MAX_SURVEYS; i++) {
+		if(cave->surveys[i] != NULL) {
+			printf("Writing survey %d... ", i);
+			survex_write_survey(cave->surveys[i]);
+			printf("done\n");
+		}
+		else {
+			printf("Skipping survey %d... ", i);		
+		}
 	}
 }

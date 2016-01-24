@@ -51,6 +51,7 @@ void survey_close(Survey *survey) {
 	free(survey);
 }
 
+/*
 int cave_push_survey(Cave *cave, Survey *survey) {
 	if (cave->top == (MAX_SURVEYS-1))
 		status = 0;
@@ -62,14 +63,24 @@ int cave_push_survey(Cave *cave, Survey *survey) {
 		cave->current_survey = survey;
 	}
 }
+*/
+
+int cave_add_survey(Cave *cave, Survey *survey, int i) {
+	//cave->current_survey = survey;
+	cave->surveys[i] = survey;
+	return 1;
+}
+
 
 void cave_print(Cave *cave) {
 }
 
 void cave_close(Cave *cave) {
-	printf("closing cave\n");
-	for(cave->top; cave->top>0; cave->top--) {
-		free(cave->surveys[cave->top]);
+	for(int i=1; i<=MAX_SURVEYS; i++) {
+		if(cave->surveys[i] != NULL) {
+			// FIXME free measurements
+			free(cave->surveys[i]);
+		}
 	}
-	free(cave);	
+	free(cave);
 }

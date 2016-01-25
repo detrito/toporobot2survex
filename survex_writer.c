@@ -31,7 +31,11 @@ int write_buffer(char *filename) {
 }
 
 void survex_write_survey(Survey *survey)
-{	
+{
+	float azimuth;
+	float dip;
+	float length;
+
 	// assemble filename
 	strcpy(filename,"\0");
 	appendToStr(filename, sizeof(filename), "data/surveys/fb_%d.txt", survey->serie);
@@ -42,6 +46,19 @@ void survex_write_survey(Survey *survey)
 	strcpy(buffer,"\0"); 	// empty buffer
 	appendToStr(buffer, sizeof(buffer), "*begin %d\n", survey->serie);
 	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", survey->name_survey);
+	
+	// azimuth correction
+	if(survey->correction_azimuth != 0) {
+		appendToStr(buffer, sizeof(buffer), "*CALIBRATE COMPASS %f\n",
+			survey->correction_azimuth);
+	}
+	
+		// azimuth correction
+	if(survey->correction_dip != 0) {
+		appendToStr(buffer, sizeof(buffer), "*CALIBRATE CLINO %f\n",
+			survey->correction_dip);
+	}
+
 	
 	// append measures
 	appendToStr(buffer, sizeof(buffer),

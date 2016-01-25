@@ -104,8 +104,9 @@ void toporobot_parse_survey(char **fields) {
 	current_survey->year = atoi(fields[5]); // year	
 	strcpy(current_survey->name_person_measuring, fields[6]); // spéléomètre
 	strcpy(current_survey->name_person_drawing, fields[7]); // spéléographe
-	current_survey->auto_declination = atoi(fields[8]); // declination (0=manual)	
-	current_survey->correction_dip = atof(fields[9]); // dip correction
+	current_survey->auto_declination = atoi(fields[8]);// declination (0=manual)	
+	current_survey->correction_azimuth = atof(fields[9]); // azimuth correction
+	current_survey->correction_dip = atof(fields[10]); // azimuth correction	
 	
 	cave_add_survey(cave, current_survey, current_survey->serie);
 	//free(current_survey);
@@ -141,9 +142,10 @@ void toporobot_parse_code(char **fields) {
 	current_survey->accuracy_azimuth = atof(fields[6]);
 	current_survey->accuracy_dip = atof(fields[7]);
 
-	// declination
-	current_survey->correction_azimuth = atof(fields[8]);
-	
+	// manual declination
+	if(current_survey->auto_declination == 0) {
+		current_survey->correction_azimuth = atof(fields[8]);
+	}
 }
 
 void toporobot_parse_measurement(char **fields) {
@@ -162,9 +164,8 @@ void toporobot_parse_measurement(char **fields) {
 		printf(", pointed serie: %d\n", cave->surveys[c1]->serie);	
 		cave->current_survey = cave->surveys[c1];
 		printf("ok");
-		// copy string and delete last caracter (newline)
-		//strncpy(current_survey->name_survey, fields[10], strlen(fields[10])-1);
 	*/
+
 		if(cave->surveys[c1] != NULL) {
 			cave->current_survey = cave->surveys[c1];
 		}
@@ -176,6 +177,9 @@ void toporobot_parse_measurement(char **fields) {
 			cave_add_survey(cave, current_survey, c1);
 			cave->current_survey = current_survey;
 		}
+		// copy string and delete last caracter (newline)
+		strncpy(cave->current_survey->name_survey, fields[10], strlen(fields[10])-1);
+
 	}
 
 	else {

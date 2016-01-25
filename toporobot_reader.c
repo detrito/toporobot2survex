@@ -130,6 +130,7 @@ void toporobot_parse_code(char **fields) {
 		printf("alloating survey memory\n");
 		current_survey = (Survey*) malloc(sizeof (Survey));
 		current_survey->top = 0; // initialise top
+		current_survey->serie = atoi(fields[2]); // serie	
 		cave_add_survey(cave, current_survey, serie);
 	}
 
@@ -171,15 +172,20 @@ void toporobot_parse_measurement(char **fields) {
 		}
 		else
 		{
+			// allocate memory for surveys without -1 or -2 lines
 			printf("alloating survey memory\n");
 			current_survey = (Survey*) malloc(sizeof (Survey));
 			current_survey->top = 0; // initialise top
+			
+			// try to retrive some data
+			current_survey->serie = c1;			
+			
 			cave_add_survey(cave, current_survey, c1);
 			cave->current_survey = current_survey;
 		}
 		// copy string and delete last caracter (newline)
-		strncpy(cave->current_survey->name_survey, fields[10], strlen(fields[10])-1);
-
+		strncpy(cave->current_survey->name_survey, fields[10],
+			strlen(fields[10])-1);
 	}
 
 	else {

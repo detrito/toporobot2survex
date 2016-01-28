@@ -11,24 +11,10 @@
 char buffer[1024*10];
 char filename[128];
 
-typedef struct {
-	float data[5];
-} SurvexData;
-
-typedef struct {
-	float data[5];
-} SurvexPassage;
-
-typedef struct {
-	SurvexData *container;
-} SurveyDataContainer;
-
-typedef struct {
-	SurvexPassage *container;
-} SurveyPassageContainer;
-
-void survex_write_survey(Survey *survey);
+/*
+void survex_write_serie(Serie *serie);
 void survex_write_main(Cave *cave);
 void survex_write_cave(Cave *cave);
+*/
 
 #endif // survex_writer_h

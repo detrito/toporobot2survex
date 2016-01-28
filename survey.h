@@ -6,8 +6,11 @@
 #ifndef SURVEY_H
 #define SURVEY_H
 
+#define LOGARITHMIC_GROWTH // for vector
 #define MAX_MEASURES 512
 #define MAX_SURVEYS 256
+
+#include "vector.h"
 
 typedef struct {
 	int start;
@@ -28,18 +31,6 @@ typedef struct {
 } Measure;
 
 typedef struct {
-	int top;
-
-	int serie;	// survey id
-	char name_survey[128];
-	char name_person_measuring[128];
-	char name_person_drawing[128];
-
-	// date
-	int day;
-	int month;
-	int year;
-	
 	// units
 	int unit_azimuth;
 	int unit_dip;
@@ -48,28 +39,43 @@ typedef struct {
 	float accuracy_length;
 	float accuracy_azimuth;
 	float accuracy_dip;
+} Code;
+
+typedef struct {
+	// date
+	int day;
+	int month;
+	int year;
+	
+	char name_person_measuring[128];
+	char name_person_drawing[128];
 	
 	// corrections
 	int auto_declination; // 0=manual; 1=auto
 	float correction_azimuth; // more often called declination
 	float correction_dip;
+} SSurvey;
+
+typedef struct {
+	int top;
+
+	int serie;	// survey id
+	char name[128];
 	
-	// array of pointers to Measures
-	Measure *survey_measures[MAX_MEASURES];
-} Survey;
+	Measure *v_measures; // vector of pointers to Measures
+	Code code;	// pointer to code
+	SSurvey ssurvey; // pointer to survey
+} Serie;
 
 typedef struct {
 	char name[128];
-	Survey *current_survey;
-	Survey *surveys[MAX_SURVEYS];
+	//Survey *surveys[MAX_SURVEYS];
+	Serie *v_series;	// vector of pointers to series
+	SSurvey *v_ssurveys; // vector of pointers to surveys
 } Cave;
 
-int survey_push_measure(Survey *survey, Measure *measure);
-void survey_print(Survey *survey);
-void survey_close(Survey *survey);
+void cave_add_survey(Cave *cave, SSurvey *ssurvey);
 
-//int cave_push_survey(Cave *cave, Survey *survey);
-int cave_add_survey(Cave *cave, Survey *survey, int i);
 void cave_print(Cave *cave);
 void cave_close(Cave *cave);
 

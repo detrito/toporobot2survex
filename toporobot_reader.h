@@ -9,11 +9,14 @@
 #include "functions.h"
 #include "survey.h"
 
-#define TOPOROBOT_FIELD_ITEMS 11
+#define TOPOROBOT_FIELD_ITEMS 11 // number of fields in a line
 
 extern Cave *cave;
-Survey *current_survey;
-Measure *current_measure;
+extern Serie *serie;
+extern Code *code;
+extern SSurvey *ssurvey;
+extern Measure *measure;
+
 //int c1; // = 0; // current or last first-column value
 
 void toporobot_process_input_file(const char *filename);

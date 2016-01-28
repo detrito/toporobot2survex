@@ -13,6 +13,8 @@ int status;
 
 // push a dynamic allocated measurement to the end of
 // the pointer array
+
+/*
 int survey_push_measure(Survey *survey, Measure *measure) {
 	if (survey->top == (MAX_MEASURES-1))
 		status = 0;
@@ -50,6 +52,7 @@ void survey_close(Survey *survey) {
 	}
 	free(survey);
 }
+*/
 
 /*
 int cave_push_survey(Cave *cave, Survey *survey) {
@@ -65,22 +68,24 @@ int cave_push_survey(Cave *cave, Survey *survey) {
 }
 */
 
-int cave_add_survey(Cave *cave, Survey *survey, int i) {
-	//cave->current_survey = survey;
-	cave->surveys[i] = survey;
-	return 1;
+void cave_add_survey(Cave *cave, SSurvey *ssurvey) {
+	// push pointer to survey to vector v_ssurveys
+	vector_push_back(cave->v_ssurveys, *ssurvey);
 }
+
 
 
 void cave_print(Cave *cave) {
 }
 
 void cave_close(Cave *cave) {
+/*
 	for(int i=1; i<=MAX_SURVEYS; i++) {
 		if(cave->surveys[i] != NULL) {
 			// FIXME free measurements
 			free(cave->surveys[i]);
 		}
 	}
+*/
 	free(cave);
 }

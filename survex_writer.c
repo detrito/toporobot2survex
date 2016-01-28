@@ -12,6 +12,7 @@
 #include "functions.h"
 #include "survey.h"
 
+/*
 int write_buffer(char *filename) {
 	// clear file or create path
 	init_output_file(filename);
@@ -29,8 +30,8 @@ int write_buffer(char *filename) {
 		exit(1);
 	}
 }
-
-void survex_write_survey(Survey *survey)
+asd
+void survex_write_serie(Serie *serie)
 {
 	float azimuth;
 	float dip;
@@ -129,3 +130,4 @@ void survex_write_cave(Cave *cave) {
 		}
 	}
 }
+*/

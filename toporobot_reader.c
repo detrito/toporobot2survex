@@ -74,7 +74,7 @@ void toporobot_parse_line(char *buf) {
 			break;
 		default:
 			if(c1>=1) {
-				//toporobot_parse_measurement(fields);
+				toporobot_parse_measurement(fields);
 			}
 			else {
 				exit(0);
@@ -103,7 +103,7 @@ void toporobot_parse_survey(char **fields) {
 	ssurvey->correction_azimuth = atof(fields[9]); // azimuth correction
 	ssurvey->correction_dip = atof(fields[10]); // azimuth correction	
 	
-	cave_add_survey(cave, ssurvey);
+	cave_push_survey(cave, ssurvey);
 }
 
 void toporobot_parse_code(char **fields) {
@@ -133,21 +133,22 @@ void toporobot_parse_code(char **fields) {
 
 void toporobot_parse_measurement(char **fields) {
 	int id_serie;
-	
 	id_serie = atoi(fields[2]);
 	
 	// -1 at column 2: begin of a new serie
 	if( id_serie == -1) {
 		printf("alloating Serie memory... ");
-		serie = (Serie*) malloc(sizeof (Serie));
+		serie = (Serie*) malloc(sizeof (Serie) +
+			MAX_MEASURE_POINTERS * sizeof(Measure*));
 		printf("done.\n");
-				
+		
 		serie->serie = id_serie;
 		//cave_add_serie(cave, serie, c1);
 		
 		// copy string and delete last caracter (newline)
 		strncpy(serie->name, fields[10],
 			strlen(fields[10])-1);
+		cave_push_serie(cave,serie);
 	}
 
 	else {
@@ -162,7 +163,7 @@ void toporobot_parse_measurement(char **fields) {
 		measure->down = atof(fields[11]);	
 		
 		// push the measurement to the end of the Serie's pointer array
-		//Serie_push_measure(cave->serie,measure);
+		serie_push_measure(serie, measure);
 		
 		printf (" measure parsed\n");
 	}

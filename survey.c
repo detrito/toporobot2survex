@@ -68,12 +68,20 @@ int cave_push_survey(Cave *cave, Survey *survey) {
 }
 */
 
-void cave_add_survey(Cave *cave, SSurvey *ssurvey) {
+void cave_push_survey(Cave *cave, SSurvey *ssurvey) {
 	// push pointer to survey to vector v_ssurveys
 	vector_push_back(cave->v_ssurveys, *ssurvey);
 }
 
+void cave_push_serie(Cave *cave, Serie *serie) {	
+	// push pointer to serie to vector v_series
+	vector_push_back(cave->v_series, *serie);
+}
 
+void serie_push_measure(Serie *serie, Measure *measure) {
+	// push pointer to measure to vector v_measures
+	vector_push_back(serie->v_measures, *measure);
+}
 
 void cave_print(Cave *cave) {
 }

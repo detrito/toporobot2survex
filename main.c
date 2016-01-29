@@ -14,6 +14,7 @@
 #define PROGRAM_NAME "toporobot2survex"
 #define VERSION "0.0.1"
 
+// temporary pointers to objects
 Cave *cave;
 SSurvey *ssurvey;
 Code *code;
@@ -32,7 +33,9 @@ int main (int argc, char *argv[]) {
 			printf("processing\n");
 			
 			//cave = (Cave*) malloc(sizeof (Cave) * sizeof(Survey));
-			cave = (Cave*) malloc(sizeof (Cave));
+			cave = (Cave*) malloc(sizeof (Cave)
+				+ MAX_SURVEY_POINTERS * sizeof(SSurvey*)
+				+ MAX_SERIE_POINTERS * sizeof(Serie*));
 			// read cave from toporobot file
 			
 			toporobot_process_input_file(argv[1]);

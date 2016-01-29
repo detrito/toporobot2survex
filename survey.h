@@ -7,8 +7,9 @@
 #define SURVEY_H
 
 #define LOGARITHMIC_GROWTH // for vector
-#define MAX_MEASURES 512
-#define MAX_SURVEYS 256
+#define MAX_MEASURE_POINTERS 1024
+#define MAX_SURVEY_POINTERS 512
+#define MAX_SERIE_POINTERS 512
 
 #include "vector.h"
 
@@ -70,11 +71,13 @@ typedef struct {
 typedef struct {
 	char name[128];
 	//Survey *surveys[MAX_SURVEYS];
-	Serie *v_series;	// vector of pointers to series
 	SSurvey *v_ssurveys; // vector of pointers to surveys
+	Serie *v_series;
 } Cave;
 
-void cave_add_survey(Cave *cave, SSurvey *ssurvey);
+void cave_push_survey(Cave *cave, SSurvey *ssurvey);
+void cave_push_serie(Cave *cave, Serie *serie);
+void serie_push_measure(Serie *serie, Measure *measure);
 
 void cave_print(Cave *cave);
 void cave_close(Cave *cave);

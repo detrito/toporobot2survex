@@ -70,17 +70,29 @@ int cave_push_survey(Cave *cave, Survey *survey) {
 
 void cave_push_survey(Cave *cave, SSurvey *ssurvey) {
 	// push pointer to survey to vector v_ssurveys
-	vector_push_back(cave->v_ssurveys, *ssurvey);
+	vector_push_back(cave->v_ssurveys, ssurvey);
+}
+
+SSurvey* cave_get_survey(Cave *cave, int i) {
+	return cave->v_ssurveys[i-1];
 }
 
 void cave_push_serie(Cave *cave, Serie *serie) {	
 	// push pointer to serie to vector v_series
-	vector_push_back(cave->v_series, *serie);
+	vector_push_back(cave->v_series, serie);
+}
+
+Serie* cave_get_serie(Cave *cave, int i) {
+	return cave->v_series[i-1];
 }
 
 void serie_push_measure(Serie *serie, Measure *measure) {
 	// push pointer to measure to vector v_measures
-	vector_push_back(serie->v_measures, *measure);
+	vector_push_back(serie->v_measures, measure);
+}
+
+Measure* serie_get_measure(Serie *serie, int i) {
+	return serie->v_measures[i];
 }
 
 void cave_print(Cave *cave) {

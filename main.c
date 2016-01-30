@@ -31,34 +31,31 @@ int main (int argc, char *argv[]) {
 		}
 		else if(file_exists( argv[1] )){
 			printf("processing\n");
+
+			// allocate memory for cave			
+			cave = (Cave*) malloc(sizeof (Cave));
 			
-			//cave = (Cave*) malloc(sizeof (Cave) * sizeof(Survey));
-			cave = (Cave*) malloc(sizeof (Cave)
-				+ MAX_SURVEY_POINTERS * sizeof(SSurvey*)
-				+ MAX_SERIE_POINTERS * sizeof(Serie*));
-			// read cave from toporobot file
-			
+			// process input file
 			toporobot_process_input_file(argv[1]);
 			
 			// write cave to survey files
 			//survex_write_cave(cave);
 			
 			cave_close(cave);
-			/*
-			printf("\nbegin\n");
-			ssurvey = (SSurvey*) malloc(sizeof (SSurvey) + sizeof(Survey)*sizeof(Measure)*MAX_MEASURES);				
-			for(int i=0; i<=10; i++) {
-				tmp_survey = (Survey*) malloc(sizeof (Survey));
-				tmp_survey->serie = i;
-				vector_push_back(ssurvey->v_series, *tmp_survey);
-			}
-			*/
+
+			// debug
 			int n = 1;
-			SSurvey tmp_survey;
-			tmp_survey = cave->v_ssurveys[n];
+			ssurvey = cave_get_survey(cave, n);	
 			printf("cave survey %d, name_person_measuring %s, name_person_drawing \n",
-				n, tmp_survey.name_person_drawing);
+				n, ssurvey->name_person_drawing);
 			
+			int k = 7;
+			serie = cave_get_serie(cave, n);
+			measure = serie_get_measure(serie, k);
+			
+			printf("serie %d, measure %d: %f/%f/%f\n",
+				serie->serie, k, measure->azimuth, measure->dip, measure->length);
+
 			return 0;
 		}
 		else {

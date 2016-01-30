@@ -138,11 +138,12 @@ void toporobot_parse_measurement(char **fields) {
 	// -1 at column 2: begin of a new serie
 	if( id_serie == -1) {
 		printf("alloating Serie memory... ");
-		serie = (Serie*) malloc(sizeof (Serie) +
-			MAX_MEASURE_POINTERS * sizeof(Measure*));
+		serie = (Serie*) malloc(sizeof (Serie));
+		//serie = (Serie*) malloc(sizeof (Serie) +
+		//	MAX_MEASURE_POINTERS * sizeof(Measure*));
 		printf("done.\n");
 		
-		serie->serie = id_serie;
+		serie->serie = c1;
 		//cave_add_serie(cave, serie, c1);
 		
 		// copy string and delete last caracter (newline)
@@ -155,6 +156,7 @@ void toporobot_parse_measurement(char **fields) {
 		// allocate the memory for a measure		
 		measure = (Measure*) malloc(sizeof (Measure));
 		measure->length = atof(fields[5]);
+		printf("length: %f\n",measure->length);
 		measure->azimuth = atof(fields[6]);
 		measure->dip = atof(fields[7]);
 		measure->left = atof(fields[8]);
@@ -162,7 +164,7 @@ void toporobot_parse_measurement(char **fields) {
 		measure->up = atof(fields[10]);
 		measure->down = atof(fields[11]);	
 		
-		// push the measurement to the end of the Serie's pointer array
+		// push the measure to the end of the vector of pointers to Series 
 		serie_push_measure(serie, measure);
 		
 		printf (" measure parsed\n");

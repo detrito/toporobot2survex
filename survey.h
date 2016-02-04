@@ -64,8 +64,8 @@ typedef struct {
 	char name[128];
 	
 	Measure **v_measures; // vector of pointers to Measures
-	Code code;	// pointer to code
-	SSurvey ssurvey; // pointer to survey
+	Code *code;	// pointer to code
+	SSurvey *ssurvey; // pointer to survey
 } Serie;
 
 typedef struct {
@@ -80,9 +80,12 @@ SSurvey* cave_get_survey(Cave *cave, int i);
 
 void cave_push_serie(Cave *cave, Serie *serie);
 Serie* cave_get_serie(Cave *cave, int i);
+int cave_get_series_length(Cave *cave);
 
 void serie_push_measure(Serie *serie, Measure *measure);
 Measure* serie_get_measure(Serie *serie, int i);
+SSurvey* serie_get_survey(Serie *serie);
+int serie_get_measures_length(Serie *serie);
 
 void cave_print(Cave *cave);
 void cave_close(Cave *cave);

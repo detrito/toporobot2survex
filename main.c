@@ -39,7 +39,7 @@ int main (int argc, char *argv[]) {
 			toporobot_process_input_file(argv[1]);
 			
 			// write cave to survey files
-			//survex_write_cave(cave);
+			survex_write_cave(cave);
 			
 			cave_close(cave);
 

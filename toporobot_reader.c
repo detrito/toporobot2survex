@@ -9,6 +9,13 @@
 
 #include "toporobot_reader.h"
 
+
+extern Cave *cave;
+extern Serie *serie;
+//extern Code *code;
+//extern SSurvey *ssurvey;
+//extern Measure *measure;
+
 int c1 = 0;
 
 void toporobot_process_input_file(const char *filename) {

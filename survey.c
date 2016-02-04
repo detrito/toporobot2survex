@@ -86,6 +86,11 @@ Serie* cave_get_serie(Cave *cave, int i) {
 	return cave->v_series[i-1];
 }
 
+
+int cave_get_series_length(Cave *cave) {
+	return vector_size(cave->v_series);
+}
+
 void serie_push_measure(Serie *serie, Measure *measure) {
 	// push pointer to measure to vector v_measures
 	vector_push_back(serie->v_measures, measure);
@@ -93,6 +98,14 @@ void serie_push_measure(Serie *serie, Measure *measure) {
 
 Measure* serie_get_measure(Serie *serie, int i) {
 	return serie->v_measures[i];
+}
+
+SSurvey* serie_get_survey(Serie *serie) {
+	return serie->ssurvey;
+}
+
+int serie_get_measures_length(Serie *serie) {
+	return vector_size(serie->v_measures);
 }
 
 void cave_print(Cave *cave) {

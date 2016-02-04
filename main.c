@@ -8,7 +8,7 @@
 #include <string.h>
 
 #include "toporobot_reader.h"
-#include "survey.h"
+#include "container.h"
 #include "survex_writer.h"
 
 #define PROGRAM_NAME "toporobot2survex"

@@ -7,7 +7,7 @@
 #define TOPOROBOT_READER_H
 
 #include "functions.h"
-#include "survey.h"
+#include "container.h"
 
 #define TOPOROBOT_FIELD_ITEMS 11 // number of fields in a line
 
@@ -16,8 +16,6 @@ extern Serie *serie;
 extern Code *code;
 extern SSurvey *ssurvey;
 extern Measure *measure;
-
-//int c1; // = 0; // current or last first-column value
 
 void toporobot_process_input_file(const char *filename);
 void toporobot_parse_line(char *buf);

@@ -10,7 +10,7 @@
 
 #include "survex_writer.h"
 #include "functions.h"
-#include "survey.h"
+#include "container.h"
 
 int write_buffer(char *filename) {
 	init_output_file(filename); // clear file or create path
@@ -92,7 +92,6 @@ void survex_write_serie(Serie *serie)
 	appendToStr(buffer, sizeof(buffer), "*begin %d\n", serie->serie);
 	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
 	
-	/* FIXME: populate surveys
 	ssurvey = serie_get_survey(serie);
 	
 	// azimuth correction
@@ -101,12 +100,11 @@ void survex_write_serie(Serie *serie)
 			ssurvey->correction_azimuth);
 	}
 	
-		// azimuth correction
+	// dip correction
 	if(ssurvey->correction_dip != 0) {
 		appendToStr(buffer, sizeof(buffer), "*CALIBRATE CLINO %f\n",
 			ssurvey->correction_dip);
 	}
-	*/
 	
 	// append measures
 	appendToStr(buffer, sizeof(buffer),

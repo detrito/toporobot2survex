@@ -1,10 +1,10 @@
-/* file: survey.h
+/* file: container.h
  * author: detrito
  * date: january 2016
  */
  
-#ifndef SURVEY_H
-#define SURVEY_H
+#ifndef CONTAINER_H
+#define CONTAINER_H
 
 #define LOGARITHMIC_GROWTH // for vector
 #define MAX_MEASURE_POINTERS 1024
@@ -72,22 +72,32 @@ typedef struct {
 	char name[128];
 	//Survey *surveys[MAX_SURVEYS];
 	SSurvey **v_ssurveys; // vector of pointers to surveys
-	Serie **v_series;
+	Serie **v_series; // vector of pointers to series
+	Code **v_codes; // vector of pointers to codes
 } Cave;
 
-void cave_push_survey(Cave *cave, SSurvey *ssurvey);
-SSurvey* cave_get_survey(Cave *cave, int i);
-
+// cave functions
 void cave_push_serie(Cave *cave, Serie *serie);
 Serie* cave_get_serie(Cave *cave, int i);
 int cave_get_series_length(Cave *cave);
 
-void serie_push_measure(Serie *serie, Measure *measure);
-Measure* serie_get_measure(Serie *serie, int i);
-SSurvey* serie_get_survey(Serie *serie);
-int serie_get_measures_length(Serie *serie);
+void cave_push_survey(Cave *cave, SSurvey *ssurvey);
+SSurvey* cave_get_survey(Cave *cave, int i);
 
-void cave_print(Cave *cave);
+void cave_set_code(Cave *cave, SSurvey *ssurvey, int i);
+Code* cave_get_code(Cave *cave, int i);
+
 void cave_close(Cave *cave);
 
-#endif // survey_h
+// serie functions
+void serie_push_measure(Serie *serie, Measure *measure);
+Measure* serie_get_measure(Serie *serie, int i);
+int serie_get_measures_length(Serie *serie);
+
+void serie_set_survey(Serie *serie, SSurvey *ssurvey);
+SSurvey* serie_get_survey(Serie *serie);
+
+void serie_set_code(Serie *serie, Code *code);
+Code* serie_get_code(Serie *serie, Code *code);
+
+#endif // container_h

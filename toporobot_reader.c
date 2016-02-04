@@ -9,13 +9,6 @@
 
 #include "toporobot_reader.h"
 
-
-extern Cave *cave;
-extern Serie *serie;
-//extern Code *code;
-//extern SSurvey *ssurvey;
-//extern Measure *measure;
-
 int c1 = 0;
 
 void toporobot_process_input_file(const char *filename) {
@@ -156,10 +149,21 @@ void toporobot_parse_measurement(char **fields) {
 		// copy string and delete last caracter (newline)
 		strncpy(serie->name, fields[10],
 			strlen(fields[10])-1);
+		
+			
 		cave_push_serie(cave,serie);
 	}
 
 	else {
+		// set serie's survey and code from the first line
+		if(id_serie == 0) {
+			code = cave_get_code(cave, atoi(fields[3]));
+			serie_set_code(serie, code);
+		
+			ssurvey = cave_get_survey(cave, atoi(fields[4]));
+			serie_set_survey(serie, ssurvey);
+		}
+	
 		// allocate the memory for a measure		
 		measure = (Measure*) malloc(sizeof (Measure));
 		measure->length = atof(fields[5]);

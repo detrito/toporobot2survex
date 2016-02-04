@@ -6,7 +6,7 @@
 #ifndef SURVEX_WRITER_H
 #define SURVEX_WRITER_H
 
-#include "survey.h"
+#include "container.h"
 
 //extern Cave *cave;
 extern Serie *serie;

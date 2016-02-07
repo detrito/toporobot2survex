@@ -70,7 +70,7 @@ void toporobot_parse_line(char *buf) {
 			break;
 		case -1:
 			printf("Code\n");
-			//toporobot_parse_code(fields);			
+			toporobot_parse_code(fields);			
 			break;
 		default:
 			if(c1>=1) {
@@ -110,7 +110,7 @@ void toporobot_parse_code(char **fields) {
 	int id_code;
 
 	id_code = atoi(fields[2]);
-	printf("code: %d", id_code);
+	printf("code: %d\n", id_code);
 	
 	code = (Code*) malloc(sizeof (Code));
 
@@ -129,19 +129,21 @@ void toporobot_parse_code(char **fields) {
 		serie->correction_azimuth = atof(fields[8]);
 	}
 	*/
+	
+	cave_set_code(cave, code, id_code);
 }
 
 void toporobot_parse_measurement(char **fields) {
-	int id_serie;
-	id_serie = atoi(fields[2]);
+	int id_measure;
+	id_measure = atoi(fields[2]);
 	
 	// -1 at column 2: begin of a new serie
-	if( id_serie == -1) {
+	if( id_measure == -1) {
 		printf("alloating Serie memory... ");
-		serie = (Serie*) malloc(sizeof (Serie));
-		//serie = (Serie*) malloc(sizeof (Serie) +
-		//	MAX_MEASURE_POINTERS * sizeof(Measure*));
-		printf("done.\n");
+		//serie = (Serie*) malloc(sizeof (Serie));
+		serie = (Serie*) malloc(sizeof (Serie) +
+			MAX_MEASURE_POINTERS * sizeof(Measure*));
+		printf("done.");
 		
 		serie->serie = c1;
 		//cave_add_serie(cave, serie, c1);
@@ -149,25 +151,22 @@ void toporobot_parse_measurement(char **fields) {
 		// copy string and delete last caracter (newline)
 		strncpy(serie->name, fields[10],
 			strlen(fields[10])-1);
-		
-			
 		cave_push_serie(cave,serie);
 	}
 
 	else {
-		// set serie's survey and code from the first line
-		if(id_serie == 0) {
+		// set serie's survey and code from the first measure-line
+		if(id_measure == 0) {
 			code = cave_get_code(cave, atoi(fields[3]));
 			serie_set_code(serie, code);
 		
 			ssurvey = cave_get_survey(cave, atoi(fields[4]));
 			serie_set_survey(serie, ssurvey);
 		}
-	
+		
 		// allocate the memory for a measure		
 		measure = (Measure*) malloc(sizeof (Measure));
 		measure->length = atof(fields[5]);
-		printf("length: %f\n",measure->length);
 		measure->azimuth = atof(fields[6]);
 		measure->dip = atof(fields[7]);
 		measure->left = atof(fields[8]);

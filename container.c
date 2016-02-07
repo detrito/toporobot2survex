@@ -41,21 +41,32 @@ SSurvey* cave_get_survey(Cave *cave, int i) {
 
 // code
 
-void cave_set_code(Cave *cave, SSurvey *ssurvey, int i) {
+void cave_set_code(Cave *cave, Code *code, int i) {
+	size_t __cap = vector_capacity(cave->v_codes);
+	if(__cap <= i) {
+		vector_grow(cave->v_codes, i);
+		// FIXME: size does not actually make sense enymore: don't use it!
+		vector_set_size(cave->v_codes, i);
+	}
+	cave->v_codes[i-1] = code;
 }
 
 Code* cave_get_code(Cave *cave, int i) {
+	return cave->v_codes[i-1];
 }
 
 void cave_close(Cave *cave) {
-/* FIXME free data
-	for(int i=1; i<=MAX_SURVEYS; i++) {
-		if(cave->surveys[i] != NULL) {
-			// FIXME free measurements
-			free(cave->surveys[i]);
-		}
+	Serie *serie;
+
+	// cycle series
+	for(int i=1; i<=cave_get_series_length(cave); i++) {
+		serie = cave_get_serie(cave, i);
+		vector_free(serie->v_measures);
 	}
-*/
+	vector_free(cave->v_series);
+	vector_free(cave->v_codes);
+	vector_free(cave->v_ssurveys);
+	
 	free(cave);
 }
 
@@ -91,6 +102,6 @@ void serie_set_code(Serie *serie, Code *code) {
 	serie->code = code;
 }
 
-Code* serie_get_code(Serie *serie, Code *code) {
+Code* serie_get_code(Serie *serie) {
 	return serie->code;
 }

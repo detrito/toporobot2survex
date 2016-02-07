@@ -10,7 +10,7 @@
 
 //extern Cave *cave;
 extern Serie *serie;
-//extern Code *code;
+extern Code *code;
 extern SSurvey *ssurvey;
 extern Measure *measure;
 

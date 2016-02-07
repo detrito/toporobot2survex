@@ -10,6 +10,7 @@
 #define MAX_MEASURE_POINTERS 1024
 #define MAX_SURVEY_POINTERS 512
 #define MAX_SERIE_POINTERS 512
+#define MAX_CODE_POINTERS 512
 
 #include "vector.h"
 
@@ -28,7 +29,7 @@ typedef struct {
 	float right;
 	float left;
 	
-	char* comment;	
+	char* comment;
 } Measure;
 
 typedef struct {
@@ -48,8 +49,8 @@ typedef struct {
 	int month;
 	int year;
 	
-	char name_person_measuring[128];
-	char name_person_drawing[128];
+	char name_person_measuring[32];
+	char name_person_drawing[32];
 	
 	// corrections
 	int auto_declination; // 0=manual; 1=auto
@@ -61,7 +62,7 @@ typedef struct {
 	int top;
 
 	int serie;	// survey id
-	char name[128];
+	char name[56];
 	
 	Measure **v_measures; // vector of pointers to Measures
 	Code *code;	// pointer to code
@@ -69,7 +70,7 @@ typedef struct {
 } Serie;
 
 typedef struct {
-	char name[128];
+	char name[56];
 	//Survey *surveys[MAX_SURVEYS];
 	SSurvey **v_ssurveys; // vector of pointers to surveys
 	Serie **v_series; // vector of pointers to series
@@ -84,7 +85,7 @@ int cave_get_series_length(Cave *cave);
 void cave_push_survey(Cave *cave, SSurvey *ssurvey);
 SSurvey* cave_get_survey(Cave *cave, int i);
 
-void cave_set_code(Cave *cave, SSurvey *ssurvey, int i);
+void cave_set_code(Cave *cave, Code *code, int i);
 Code* cave_get_code(Cave *cave, int i);
 
 void cave_close(Cave *cave);
@@ -98,6 +99,6 @@ void serie_set_survey(Serie *serie, SSurvey *ssurvey);
 SSurvey* serie_get_survey(Serie *serie);
 
 void serie_set_code(Serie *serie, Code *code);
-Code* serie_get_code(Serie *serie, Code *code);
+Code* serie_get_code(Serie *serie);
 
 #endif // container_h

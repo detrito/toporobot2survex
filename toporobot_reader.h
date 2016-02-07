@@ -20,6 +20,7 @@ extern Measure *measure;
 void toporobot_process_input_file(const char *filename);
 void toporobot_parse_line(char *buf);
 void toporobot_parse_name(char **fields);
+void toporobot_parse_coordinates(char **fields);
 void toporobot_parse_survey(char **fields);
 void toporobot_parse_code(char **fields);
 void toporobot_parse_measure(char **fields);

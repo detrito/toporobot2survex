@@ -64,6 +64,11 @@ void survex_write_main(Cave *cave) {
 	// blank line
 	appendToStr(buffer, sizeof(buffer), "\n");
 	
+	// entrance's coordinates
+	appendToStr(buffer, sizeof(buffer), "*equate entree 1.0\n");
+	appendToStr(buffer, sizeof(buffer), "*fix entree %d %d %d\n\n",
+		cave->entrance.x, cave->entrance.y, cave->entrance.z);
+	
 	// include all serie files
 	for(int i=1; i<=cave_get_series_length(cave); i++) {
 		serie = cave_get_serie(cave, i);

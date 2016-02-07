@@ -83,8 +83,16 @@ typedef struct {
 } Link;
 
 typedef struct {
+	int x;
+	int y;
+	int z;
+} Coordinate;
+
+typedef struct {
 	char name[56];
-	//Survey *surveys[MAX_SURVEYS];
+	
+	Coordinate entrance; // coordinates of the first point of the first serie
+	
 	SSurvey **v_ssurveys; // vector of pointers to surveys
 	Serie **v_series; // vector of pointers to series
 	Code **v_codes; // vector of pointers to codes

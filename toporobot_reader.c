@@ -63,6 +63,7 @@ void toporobot_parse_line(char *buf) {
 			break;
 		case -5:
 			printf("Coordonnée entrée\n");
+				toporobot_parse_coordinates(fields);
 			break;
 		case -2:
 			printf("Expé\n");
@@ -87,6 +88,12 @@ void toporobot_parse_name(char **fields) {
 	strncpy(cave->name, fields[3], strlen(fields[3])-1);
 }
 
+void toporobot_parse_coordinates(char **fields) {
+	// coordinates of the first point of the first serie
+	cave->entrance.x = atoi(fields[3]);
+	cave->entrance.y = atoi(fields[4]);
+	cave->entrance.z = atoi(fields[5]);
+}
 
 void toporobot_parse_survey(char **fields) {
 	// allocate the memory for the Serie

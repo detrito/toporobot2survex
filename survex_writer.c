@@ -135,13 +135,13 @@ void survex_write_serie(Serie *serie)
 	{
 		// azimuth correction
 		if(ssurvey->correction_azimuth != 0) {
-			appendToStr(buffer, sizeof(buffer), "*CALIBRATE COMPASS %f\n",
+			appendToStr(buffer, sizeof(buffer), "*CALIBRATE COMPASS %.2f\n",
 				ssurvey->correction_azimuth);
 		}
 	
 		// dip correction
 		if(ssurvey->correction_dip != 0) {
-			appendToStr(buffer, sizeof(buffer), "*CALIBRATE CLINO %f\n",
+			appendToStr(buffer, sizeof(buffer), "*CALIBRATE CLINO %.2f\n",
 				ssurvey->correction_dip);
 		}
 	}
@@ -186,7 +186,7 @@ void survex_write_serie(Serie *serie)
 	
 	for(int i=0; i<serie_get_measures_length(serie); i++) {
 		measure = serie_get_measure(serie, i);
-		appendToStr(buffer, sizeof(buffer), "%d\t%d\t%f\t%f\t%f\n",
+		appendToStr(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f\n",
 			i,
 			i+1,
 			measure->length,
@@ -201,7 +201,7 @@ void survex_write_serie(Serie *serie)
 	
 	for(int i=0; i<serie_get_measures_length(serie); i++) {
 		measure = serie_get_measure(serie, i);
-		appendToStr(buffer, sizeof(buffer), "%d\t%d\t%f\t%f\t%f\t%f\n",
+		appendToStr(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f\t%.2f\n",
 			i,
 			i+1,
 			measure->left,

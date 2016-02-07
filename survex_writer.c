@@ -28,9 +28,10 @@ int write_buffer(char *filename) {
 	}
 }
 
-void survex_write_cave(Cave *cave) {
+void survex_write_cave(const char *folder) {
 	Serie *serie;
-
+	
+	strcpy(foldername, folder); 
 	printf("Writing cave... \n");
 	
 	survex_write_main(cave);
@@ -51,11 +52,12 @@ void survex_write_cave(Cave *cave) {
 }
 
 // write the main file who includes all the series
-void survex_write_main(Cave *cave) {
+void survex_write_main() {
 
 	// assemble filename
-	strcpy(filename,"data/main.svx");
-		
+	strcpy(filename,"\0");
+	appendToStr(filename, sizeof(filename), "%s/main.svx", foldername);
+	
 	// puts
 	strcpy(buffer,"\0");
 	appendToStr(buffer, sizeof(buffer), "*begin\n");
@@ -116,9 +118,10 @@ void survex_write_serie(Serie *serie)
 	char unit_dip[16];
 
 	// assemble filename
+	
 	strcpy(filename,"\0");
 	appendToStr(filename, sizeof(filename),
-		"data/surveys/%d.svx", serie->serie);
+		"%s/surveys/%d.svx", foldername, serie->serie);
 
 	// begin serie
 	strcpy(buffer,"\0"); 	// empty buffer

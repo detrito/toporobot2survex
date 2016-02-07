@@ -81,13 +81,22 @@ void survex_write_main(Cave *cave) {
 	for(int i=1; i<=cave_get_series_length(cave); i++) {
 		serie = cave_get_serie(cave, i);
 		
-		if(serie) {
+		if(serie) { 
+			// link to first measure
 			appendToStr(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
+				serie->serie,
+				0,
 				serie->link_begin_serie,
-				serie->link_begin_measure,
+				serie->link_begin_measure);
+			// link to last measure
+			appendToStr(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
+				serie->serie,
+				serie_get_measures_length(serie)-1,
 				serie->link_end_serie,
 				serie->link_end_measure);
 		}
+		
+		
 	}
 	
 	// blank line and end
@@ -172,10 +181,12 @@ void survex_write_serie(Serie *serie)
 	
 	for(int i=0; i<serie_get_measures_length(serie); i++) {
 		measure = serie_get_measure(serie, i);
-		appendToStr(buffer, sizeof(buffer), "%f,%f,%f\n",
+		appendToStr(buffer, sizeof(buffer), "%d\t%d\t%f\t%f\t%f\n",
+			i,
+			i+1,
+			measure->length,
 			measure->azimuth,
-			measure->dip,
-			measure->length
+			measure->dip
 		);
 	}
 	
@@ -185,7 +196,9 @@ void survex_write_serie(Serie *serie)
 	
 	for(int i=0; i<serie_get_measures_length(serie); i++) {
 		measure = serie_get_measure(serie, i);
-		appendToStr(buffer, sizeof(buffer), "%f,%f,%f,%f\n",
+		appendToStr(buffer, sizeof(buffer), "%d\t%d\t%f\t%f\t%f\t%f\n",
+			i,
+			i+1,
 			measure->left,
 			measure->right,
 			measure->up,

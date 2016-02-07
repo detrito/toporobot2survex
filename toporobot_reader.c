@@ -74,7 +74,7 @@ void toporobot_parse_line(char *buf) {
 			break;
 		default:
 			if(c1>=1) {
-				toporobot_parse_measurement(fields);
+				toporobot_parse_measure(fields);
 			}
 			else {
 				exit(0);
@@ -133,7 +133,7 @@ void toporobot_parse_code(char **fields) {
 	cave_set_code(cave, code, id_code);
 }
 
-void toporobot_parse_measurement(char **fields) {
+void toporobot_parse_measure(char **fields) {
 	int id_measure;
 	id_measure = atoi(fields[2]);
 	
@@ -150,7 +150,14 @@ void toporobot_parse_measurement(char **fields) {
 		
 		// copy string and delete last caracter (newline)
 		strncpy(serie->name, fields[10],
-			strlen(fields[10])-1);
+			strlen(fields[10])-1);	
+		
+		// links the serie's begin and end points
+		serie->link_begin_serie = atoi(fields[3]);
+		serie->link_begin_measure = atoi(fields[4]);
+		serie->link_end_serie = atoi(fields[5]);
+		serie->link_end_measure = atoi(fields[6]);
+		
 		cave_push_serie(cave,serie);
 	}
 
@@ -172,7 +179,10 @@ void toporobot_parse_measurement(char **fields) {
 		measure->left = atof(fields[8]);
 		measure->right = atof(fields[9]);
 		measure->up = atof(fields[10]);
-		measure->down = atof(fields[11]);	
+		measure->down = atof(fields[11]);
+		
+		// seto pointer to serie
+		measure->serie = serie;
 		
 		// push the measure to the end of the vector of pointers to Series 
 		serie_push_measure(serie, measure);

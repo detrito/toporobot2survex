@@ -22,6 +22,6 @@ void toporobot_parse_line(char *buf);
 void toporobot_parse_name(char **fields);
 void toporobot_parse_survey(char **fields);
 void toporobot_parse_code(char **fields);
-void toporobot_parse_measurement(char **fields);
+void toporobot_parse_measure(char **fields);
 
 #endif // survex_writer_h

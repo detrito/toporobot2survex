@@ -51,6 +51,27 @@ void cave_set_code(Cave *cave, Code *code, int i) {
 	cave->v_codes[i-1] = code;
 }
 
+// links
+
+void cave_create_links(Cave *cave) {
+	Serie *serie;
+	
+	// cycle series
+	for(int i=1; i<=cave_get_series_length(cave); i++) {
+		serie = cave_get_serie(cave, i);
+		if(serie) {
+			printf("serie %d: from %d/%d to %d/%d\n",
+				i,
+				serie->link_begin_serie,
+				serie->link_begin_measure,
+				serie->link_end_serie,
+				serie->link_end_measure);
+		}
+	}
+}
+
+// destroy
+
 Code* cave_get_code(Cave *cave, int i) {
 	return cave->v_codes[i-1];
 }

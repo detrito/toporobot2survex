@@ -34,7 +34,7 @@ void survex_write_cave(Cave *cave) {
 	printf("Writing cave... \n");
 	
 	survex_write_main(cave);
-
+	
 	for(int i=1; i<=cave_get_series_length(cave); i++) {
 		serie = cave_get_serie(cave, i);
 
@@ -60,18 +60,38 @@ void survex_write_main(Cave *cave) {
 	strcpy(buffer,"\0");
 	appendToStr(buffer, sizeof(buffer), "*begin\n");
 	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", cave->name);
+
+	// blank line
+	appendToStr(buffer, sizeof(buffer), "\n");
 	
 	// include all serie files
 	for(int i=1; i<=cave_get_series_length(cave); i++) {
 		serie = cave_get_serie(cave, i);
 		
-		if(serie != NULL) {
+		if(serie) {
 			appendToStr(buffer, sizeof(buffer), "*include surveys/%d\n",
 				serie->serie);
 		}
 	}
 	
-	appendToStr(buffer, sizeof(buffer), "*end\n");
+	// blank line
+	appendToStr(buffer, sizeof(buffer), "\n");
+	
+	// links series together
+	for(int i=1; i<=cave_get_series_length(cave); i++) {
+		serie = cave_get_serie(cave, i);
+		
+		if(serie) {
+			appendToStr(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
+				serie->link_begin_serie,
+				serie->link_begin_measure,
+				serie->link_end_serie,
+				serie->link_end_measure);
+		}
+	}
+	
+	// blank line and end
+	appendToStr(buffer, sizeof(buffer), "\n*end\n");
 	write_buffer(filename);
 }
 
@@ -84,11 +104,15 @@ void survex_write_serie(Serie *serie)
 	// assemble filename
 	strcpy(filename,"\0");
 	appendToStr(filename, sizeof(filename),
-		"data/surveys/fb_%d.txt", serie->serie);
+		"data/surveys/%d.svx", serie->serie);
 
 	// begin serie
 	strcpy(buffer,"\0"); 	// empty buffer
-	appendToStr(buffer, sizeof(buffer), "*begin %d\n", serie->serie);
+	
+	// serie begin and newline
+	appendToStr(buffer, sizeof(buffer), "*begin %d\n\n", serie->serie);
+
+	// serie title	
 	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
 	
 	// measure corrections
@@ -169,8 +193,8 @@ void survex_write_serie(Serie *serie)
 		);
 	}
 	
-	// end serie
-	appendToStr(buffer, sizeof(buffer), "*end %d\n",serie->serie);
+	// blank line and end serie
+	appendToStr(buffer, sizeof(buffer), "\n*end %d\n",serie->serie);
 	
 	// write to file
 	write_buffer(filename);

@@ -36,11 +36,15 @@ int main (int argc, char *argv[]) {
 			cave = (Cave*) malloc(sizeof (Cave)
 				+ MAX_SURVEY_POINTERS * sizeof(SSurvey*)
 				+ MAX_SERIE_POINTERS * sizeof(Serie*)
-				+ MAX_CODE_POINTERS * sizeof(Code*));
+				+ MAX_CODE_POINTERS * sizeof(Code*)
+				+ MAX_LINK_POINTERS * sizeof(Link*));
 
 			// process input file
 			toporobot_process_input_file(argv[1]);
 			
+			// create link object
+			//cave_create_links(cave);
+					
 			// write cave to survey files
 			survex_write_cave(cave);
 			

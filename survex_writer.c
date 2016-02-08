@@ -77,7 +77,7 @@ void survex_write_main() {
 		
 		if(serie) {
 			appendToStr(buffer, sizeof(buffer), "*include surveys/%d\n",
-				serie->serie);
+				serie->id_serie);
 		}
 	}
 	
@@ -91,13 +91,13 @@ void survex_write_main() {
 		if(serie) { 
 			// link to first measure
 			appendToStr(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
-				serie->serie,
+				serie->id_serie,
 				0,
 				serie->link_begin_serie,
 				serie->link_begin_measure);
 			// link to last measure
 			appendToStr(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
-				serie->serie,
+				serie->id_serie,
 				serie_get_measures_length(serie)-1,
 				serie->link_end_serie,
 				serie->link_end_measure);
@@ -121,13 +121,13 @@ void survex_write_serie(Serie *serie)
 	
 	strcpy(filename,"\0");
 	appendToStr(filename, sizeof(filename),
-		"%s/surveys/%d.svx", foldername, serie->serie);
+		"%s/surveys/%d.svx", foldername, serie->id_serie);
 
 	// begin serie
 	strcpy(buffer,"\0"); 	// empty buffer
 	
 	// serie begin and newline
-	appendToStr(buffer, sizeof(buffer), "*begin %d\n\n", serie->serie);
+	appendToStr(buffer, sizeof(buffer), "*begin %d\n\n", serie->id_serie);
 
 	// serie title	
 	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
@@ -215,7 +215,7 @@ void survex_write_serie(Serie *serie)
 	}
 	
 	// blank line and end serie
-	appendToStr(buffer, sizeof(buffer), "\n*end %d\n",serie->serie);
+	appendToStr(buffer, sizeof(buffer), "\n*end %d\n",serie->id_serie);
 	
 	// write to file
 	write_buffer(filename);

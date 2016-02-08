@@ -77,7 +77,7 @@ int main (int argc, char *argv[]) {
 			measure = serie_get_measure(serie, k);
 	
 			printf("SERIE %d measure %d: %f/%f/%f\n",
-				serie->serie, k, measure->azimuth, measure->dip, measure->length);
+				serie->id_serie, k, measure->azimuth, measure->dip, measure->length);
 	
 			n = 40;
 			code = cave_get_code(cave, n);

@@ -168,7 +168,7 @@ void toporobot_parse_measure(char **fields) {
 		serie = (Serie*) malloc(sizeof (Serie) +
 			MAX_MEASURE_POINTERS * sizeof(Measure*));
 		
-		serie->serie = c1;
+		serie->id_serie = c1;
 		//cave_add_serie(cave, serie, c1);
 		
 		// copy string and delete last caracter (newline)

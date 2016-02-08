@@ -2,7 +2,6 @@
  * author: detrito
  * date: january 2016
  */
-
  
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,8 +30,10 @@ int write_buffer(char *filename) {
 void survex_write_cave(const char *folder) {
 	Serie *serie;
 	
-	strcpy(foldername, folder); 
-	printf("Writing cave... \n");
+	strcpy(foldername, folder);
+	if(verbose) {
+		printf("Writing cave... \n");
+	}
 	
 	survex_write_main(cave);
 	
@@ -40,15 +41,12 @@ void survex_write_cave(const char *folder) {
 		serie = cave_get_serie(cave, i);
 
 		if(serie != NULL) {
-			printf("Serie serie %d... ", i);
+			if(verbose) {
+				printf("Writing serie %d...\n", i);
+			}
 			survex_write_serie(cave_get_serie(cave, i));
-			printf("done.\n");
-		}
-		else {
-			printf("Skipping survey %d... ", i);		
 		}
 	}
-	printf("Done writing cave.\n");
 }
 
 // write the main file who includes all the series
@@ -160,7 +158,7 @@ void survex_write_serie(Serie *serie)
 				strcpy(unit_azimuth,"GRADS");
 				break;
 			default:
-				printf("Error: unexpexted azimuth unit\n");
+				fprintf(stderr,"Error: unexpexted azimuth unit\n");
 				exit(1);
 		}
 		appendToStr(buffer,sizeof(buffer), "*UNITS COMPASS %s\n", unit_azimuth);
@@ -176,7 +174,7 @@ void survex_write_serie(Serie *serie)
 				strcpy(unit_dip,"PERCENT");
 				break;			
 			default:
-				printf("Error: unexpexted dip unit\n");
+				fprintf(stderr,"Error: unexpexted dip unit\n");
 				exit(1);
 		}
 		appendToStr(buffer, sizeof(buffer), "*UNITS CLINO %s\n", unit_dip);

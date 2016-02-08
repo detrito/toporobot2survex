@@ -8,6 +8,7 @@
 
 #include "container.h"
 
+extern int verbose;
 extern Cave *cave;
 extern Serie *serie;
 extern Code *code;

@@ -21,6 +21,8 @@ Code *code;
 Serie *serie;
 Measure *measure;
 
+int verbose = 1;
+
 #include "vector.h"
 
 int print_help() {
@@ -40,8 +42,10 @@ int main (int argc, char *argv[]) {
 	}
 	else if(argc == 3) {
 		if(file_exists( argv[1] ) && file_exists(argv[2])) {
-			printf("processing\n");
-
+			if(verbose) {
+				printf("Processing input file...");
+			}
+			
 			// allocate memory for cave			
 			cave = (Cave*) malloc(sizeof (Cave)
 				+ MAX_SURVEY_POINTERS * sizeof(SSurvey*)
@@ -56,8 +60,12 @@ int main (int argc, char *argv[]) {
 			//cave_create_links(cave);
 			
 			// write cave to survey files
+			if(verbose) {
+				printf("\nWriting to output files...\n");
+			}
 			survex_write_cave(argv[2]);
-	
+			
+			/*
 			// debug
 			int n = 2;
 			ssurvey = cave_get_survey(cave, n);	
@@ -80,11 +88,16 @@ int main (int argc, char *argv[]) {
 			printf("Closing cave... ");
 			cave_close(cave);
 			printf("done.\n");
+			*/
+
+			if(verbose) {
+				printf("Done. Exiting.\n");
+			}
 
 			return 0;
 		}
 		else {
-			printf("Error: input file or output folder not found.\n");
+			fprintf(stderr,"Error: input file or output folder not found.\n");
 			return 1;
 		}
 	}
@@ -92,6 +105,6 @@ int main (int argc, char *argv[]) {
 		return print_help();
 	}
 
-	printf("Unknown error\n");
+	fprintf(stderr,"Error: unknown error.\n");
 	return 1;
 }

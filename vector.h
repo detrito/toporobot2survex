@@ -12,6 +12,8 @@
 #include <stdlib.h> /* for malloc/realloc/free */
 #include <assert.h> /* for assert */
 
+extern int verbose;
+
 /**
  * @brief vector_set_capacity - For internal use, sets the capacity variable of the vector
  * @param vec - the vector
@@ -19,7 +21,9 @@
  * @return void
  */
 #define vector_set_capacity(vec, size)   \
-printf("Reallocating vector memoy: size %d\n", size); \
+if(verbose) {                            \
+	printf("Reallocating vector memoy: size %d", size); \
+}                                        \
 do {                                     \
 	if(vec) {                            \
 		((size_t *)(vec))[-1] = (size);  \

@@ -11,6 +11,7 @@
 
 #define TOPOROBOT_FIELD_ITEMS 11 // number of fields in a line
 
+extern int verbose;
 extern Cave *cave;
 extern Serie *serie;
 extern Code *code;

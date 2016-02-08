@@ -21,7 +21,10 @@ void toporobot_process_input_file(const char *filename) {
 	// load a line in the buffer
 	while (fgets (buf, sizeof(buf), file)) {
 		i++;
-		printf("%i ",i);
+		
+		if(verbose) {
+			printf("\n%i ",i);
+		}
 		
 		// if not newline (\n + \0) 
 		if(strlen(buf) >= 2) {
@@ -32,9 +35,6 @@ void toporobot_process_input_file(const char *filename) {
 	if (ferror(stdin)) {
 		fprintf(stderr,"Error reading stdin\n");
 		abort();
-	}
-	else {
-		printf("EOF\n");
 	}
 }
 
@@ -58,23 +58,35 @@ void toporobot_parse_line(char *buf) {
 	
 	switch (c1) {
 		case -6:
-			printf("Nome entrée\n");
-				toporobot_parse_name(fields);
+			if(verbose) {
+				printf("Name - ");
+			}
+			toporobot_parse_name(fields);
 			break;
 		case -5:
-			printf("Coordonnée entrée\n");
-				toporobot_parse_coordinates(fields);
+			if(verbose) {
+				printf("Coordinates - ");
+			}
+			toporobot_parse_coordinates(fields);
 			break;
 		case -2:
-			printf("Expé\n");
+			if(verbose) {
+				printf("Survey - ");
+			}
 			toporobot_parse_survey(fields);
 			break;
 		case -1:
-			printf("Code\n");
+			if(verbose) {
+				printf("Code - ");
+			}
 			toporobot_parse_code(fields);			
 			break;
 		default:
 			if(c1>=1) {
+				if(verbose) {
+					printf("Measure - ");
+				}
+
 				toporobot_parse_measure(fields);
 			}
 			else {
@@ -97,9 +109,11 @@ void toporobot_parse_coordinates(char **fields) {
 
 void toporobot_parse_survey(char **fields) {
 	// allocate the memory for the Serie
-	printf("alloating Survey memory... ");
+	if(verbose) {
+		printf("Alloating Survey memory... ");
+	}
+	
 	ssurvey = (SSurvey*) malloc(sizeof (SSurvey));
-	printf(" done.\n");
 	
 	ssurvey->day = atoi(fields[3]); // day
 	ssurvey->month = atoi(fields[4]); // month
@@ -117,8 +131,9 @@ void toporobot_parse_code(char **fields) {
 	int id_code;
 
 	id_code = atoi(fields[2]);
-	printf("code: %d\n", id_code);
-	
+	if(verbose) {
+		printf("code: %d\n", id_code);
+	}
 	code = (Code*) malloc(sizeof (Code));
 
 	// units
@@ -146,11 +161,12 @@ void toporobot_parse_measure(char **fields) {
 	
 	// -1 at column 2: begin of a new serie
 	if( id_measure == -1) {
-		printf("alloating Serie memory... ");
+		if(verbose) {
+			printf("Alloating Serie memory... ");
+		}
 		//serie = (Serie*) malloc(sizeof (Serie));
 		serie = (Serie*) malloc(sizeof (Serie) +
 			MAX_MEASURE_POINTERS * sizeof(Measure*));
-		printf("done.");
 		
 		serie->serie = c1;
 		//cave_add_serie(cave, serie, c1);
@@ -193,7 +209,5 @@ void toporobot_parse_measure(char **fields) {
 		
 		// push the measure to the end of the vector of pointers to Series 
 		serie_push_measure(serie, measure);
-		
-		printf (" measure parsed\n");
 	}
 }

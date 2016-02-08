@@ -188,10 +188,14 @@ void toporobot_parse_measure(char **fields) {
 		// set serie's survey and code from the first measure-line
 		if(id_measure == 0) {
 			code = cave_get_code(cave, atoi(fields[3]));
-			serie_set_code(serie, code);
+			if(code) {
+				serie_set_code(serie, code);
+			}
 		
 			ssurvey = cave_get_survey(cave, atoi(fields[4]));
-			serie_set_survey(serie, ssurvey);
+			if(ssurvey) {
+				serie_set_survey(serie, ssurvey);
+			}
 		}
 		
 		// allocate the memory for a measure		

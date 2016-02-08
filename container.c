@@ -82,7 +82,9 @@ void cave_close(Cave *cave) {
 	// cycle series
 	for(int i=1; i<=cave_get_series_length(cave); i++) {
 		serie = cave_get_serie(cave, i);
-		vector_free(serie->v_measures);
+		if(serie) {
+			vector_free(serie->v_measures);
+		}
 	}
 	vector_free(cave->v_series);
 	vector_free(cave->v_codes);

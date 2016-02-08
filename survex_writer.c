@@ -41,10 +41,12 @@ void survex_write_cave(const char *folder) {
 		serie = cave_get_serie(cave, i);
 
 		if(serie != NULL) {
-			if(verbose) {
-				printf("Writing serie %d...\n", i);
+			if(serie) {
+				if(verbose) {
+					printf("Writing serie %d...\n", i);
+				}
+				survex_write_serie(serie);
 			}
-			survex_write_serie(cave_get_serie(cave, i));
 		}
 	}
 }

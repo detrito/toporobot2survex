@@ -12,7 +12,7 @@ extern int verbose;
 extern Cave *cave;
 extern Serie *serie;
 extern Code *code;
-extern SSurvey *ssurvey;
+extern Survey *survey;
 extern Measure *measure;
 
 char buffer[1024*10];

@@ -30,13 +30,13 @@ int cave_get_series_length(Cave *cave) {
 
 // survey
 
-void cave_push_survey(Cave *cave, SSurvey *ssurvey) {
-	// push pointer to survey to vector v_ssurveys
-	vector_push_back(cave->v_ssurveys, ssurvey);
+void cave_push_survey(Cave *cave, Survey *survey) {
+	// push pointer to survey to vector v_surveys
+	vector_push_back(cave->v_surveys, survey);
 }
 
-SSurvey* cave_get_survey(Cave *cave, int i) {
-	return cave->v_ssurveys[i-1];
+Survey* cave_get_survey(Cave *cave, int i) {
+	return cave->v_surveys[i-1];
 }
 
 // code
@@ -88,7 +88,7 @@ void cave_close(Cave *cave) {
 	}
 	vector_free(cave->v_series);
 	vector_free(cave->v_codes);
-	vector_free(cave->v_ssurveys);
+	vector_free(cave->v_surveys);
 	
 	free(cave);
 }
@@ -113,12 +113,12 @@ int serie_get_measures_length(Serie *serie) {
 	return vector_size(serie->v_measures);
 }
 
-void serie_set_survey(Serie *serie, SSurvey *ssurvey) {
-	serie->ssurvey = ssurvey;
+void serie_set_survey(Serie *serie, Survey *survey) {
+	serie->survey = survey;
 }
 
-SSurvey* serie_get_survey(Serie *serie) {
-	return serie->ssurvey;
+Survey* serie_get_survey(Serie *serie) {
+	return serie->survey;
 }
 
 void serie_set_code(Serie *serie, Code *code) {

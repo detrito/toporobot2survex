@@ -15,7 +15,7 @@ extern int verbose;
 extern Cave *cave;
 extern Serie *serie;
 extern Code *code;
-extern SSurvey *ssurvey;
+extern Survey *survey;
 extern Measure *measure;
 
 void toporobot_process_input_file(const char *filename);

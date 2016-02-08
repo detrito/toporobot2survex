@@ -113,18 +113,18 @@ void toporobot_parse_survey(char **fields) {
 		printf("Alloating Survey memory... ");
 	}
 	
-	ssurvey = (SSurvey*) malloc(sizeof (SSurvey));
+	survey = (Survey*) malloc(sizeof (Survey));
 	
-	ssurvey->day = atoi(fields[3]); // day
-	ssurvey->month = atoi(fields[4]); // month
-	ssurvey->year = atoi(fields[5]); // year	
-	strcpy(ssurvey->name_person_measuring, fields[6]); // spéléomètre
-	strcpy(ssurvey->name_person_drawing, fields[7]); // spéléographe
-	ssurvey->auto_declination = atoi(fields[8]);// declination (0=manual)	
-	ssurvey->correction_azimuth = atof(fields[9]); // azimuth correction
-	ssurvey->correction_dip = atof(fields[10]); // azimuth correction	
+	survey->day = atoi(fields[3]); // day
+	survey->month = atoi(fields[4]); // month
+	survey->year = atoi(fields[5]); // year	
+	strcpy(survey->name_person_measuring, fields[6]); // spéléomètre
+	strcpy(survey->name_person_drawing, fields[7]); // spéléographe
+	survey->auto_declination = atoi(fields[8]);// declination (0=manual)	
+	survey->correction_azimuth = atof(fields[9]); // azimuth correction
+	survey->correction_dip = atof(fields[10]); // azimuth correction	
 	
-	cave_push_survey(cave, ssurvey);
+	cave_push_survey(cave, survey);
 }
 
 void toporobot_parse_code(char **fields) {
@@ -192,9 +192,9 @@ void toporobot_parse_measure(char **fields) {
 				serie_set_code(serie, code);
 			}
 		
-			ssurvey = cave_get_survey(cave, atoi(fields[4]));
-			if(ssurvey) {
-				serie_set_survey(serie, ssurvey);
+			survey = cave_get_survey(cave, atoi(fields[4]));
+			if(survey) {
+				serie_set_survey(serie, survey);
 			}
 		}
 		

@@ -133,19 +133,19 @@ void survex_write_serie(Serie *serie)
 	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
 	
 	// measure corrections
-	ssurvey = serie_get_survey(serie);
-	if(ssurvey)
+	survey = serie_get_survey(serie);
+	if(survey)
 	{
 		// azimuth correction
-		if(ssurvey->correction_azimuth != 0) {
+		if(survey->correction_azimuth != 0) {
 			appendToStr(buffer, sizeof(buffer), "*CALIBRATE COMPASS %.2f\n",
-				ssurvey->correction_azimuth);
+				survey->correction_azimuth);
 		}
 	
 		// dip correction
-		if(ssurvey->correction_dip != 0) {
+		if(survey->correction_dip != 0) {
 			appendToStr(buffer, sizeof(buffer), "*CALIBRATE CLINO %.2f\n",
-				ssurvey->correction_dip);
+				survey->correction_dip);
 		}
 	}
 		

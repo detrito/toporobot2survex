@@ -16,7 +16,7 @@
 
 // temporary pointers to objects
 Cave *cave;
-SSurvey *ssurvey;
+Survey *survey;
 Code *code;
 Serie *serie;
 Measure *measure;
@@ -48,7 +48,7 @@ int main (int argc, char *argv[]) {
 			
 			// allocate memory for cave			
 			cave = (Cave*) malloc(sizeof (Cave)
-				+ MAX_SURVEY_POINTERS * sizeof(SSurvey*)
+				+ MAX_SURVEY_POINTERS * sizeof(Survey*)
 				+ MAX_SERIE_POINTERS * sizeof(Serie*)
 				+ MAX_CODE_POINTERS * sizeof(Code*)
 				+ MAX_LINK_POINTERS * sizeof(Link*));
@@ -68,9 +68,9 @@ int main (int argc, char *argv[]) {
 			/*
 			// debug
 			int n = 2;
-			ssurvey = cave_get_survey(cave, n);	
+			survey = cave_get_survey(cave, n);	
 			printf("CAVE survey %d, name_person_measuring %s, name_person_drawing %s \n",
-				n, ssurvey->name_person_measuring, ssurvey->name_person_drawing);
+				n, survey->name_person_measuring, survey->name_person_drawing);
 	
 			int k = 5;
 			serie = cave_get_serie(cave, n);

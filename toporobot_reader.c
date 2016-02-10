@@ -26,10 +26,7 @@ void toporobot_process_input_file(const char *filename) {
 			printf("\n%i ",i);
 		}
 		
-		// if not newline (\n + \0) 
-		if(strlen(buf) >= 2) {
-			toporobot_parse_line(buf);
-		}
+		toporobot_parse_line(buf);
 	}
 	
 	if (ferror(stdin)) {
@@ -86,11 +83,12 @@ void toporobot_parse_line(char *buf) {
 				if(verbose) {
 					printf("Measure - ");
 				}
-
 				toporobot_parse_measure(fields);
 			}
 			else {
-				exit(0);
+				if(verbose) {
+					printf("Assuming newline");
+				}
 			}
 	}
 }
@@ -191,10 +189,18 @@ void toporobot_parse_measure(char **fields) {
 			if(code) {
 				serie_set_code(serie, code);
 			}
+			else {
+				fprintf(stderr,"Error: code %d not found\n", code);
+				abort();
+			}
 		
 			survey = cave_get_survey(cave, atoi(fields[4]));
 			if(survey) {
 				serie_set_survey(serie, survey);
+			}
+			else {
+				fprintf(stderr,"Error: survey %d not found\n", survey);
+				abort();
 			}
 		}
 		
@@ -210,8 +216,9 @@ void toporobot_parse_measure(char **fields) {
 		
 		// seto pointer to serie
 		measure->serie = serie;
-		
+		printf("asd\n");
 		// push the measure to the end of the vector of pointers to Series 
 		serie_push_measure(serie, measure);
+		printf("asd_end\n");
 	}
 }

@@ -32,7 +32,8 @@
 *.dSYM/
 
 # Data directory
-data/
+data*/
 
 # Executable
 toporobot2survex
+

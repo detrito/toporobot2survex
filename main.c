@@ -63,6 +63,7 @@ int main (int argc, char *argv[]) {
 			if(verbose) {
 				printf("\nWriting to output files...\n");
 			}
+			
 			survex_write_cave(argv[2]);
 			
 			/*

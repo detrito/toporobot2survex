@@ -89,18 +89,38 @@ void survex_write_main() {
 		serie = cave_get_serie(cave, i);
 		
 		if(serie) { 
+			char str_from[256] = "\0";
+			char str_to[256] = "\0";
+			
 			// link to first measure
-			append_to_str(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
+			append_to_str(str_from, sizeof(str_from), "%d.%d",
 				serie->id_serie,
-				0,
+				0);				
+			append_to_str(str_to, sizeof(str_to), "%d.%d",
 				serie->link_begin_serie,
 				serie->link_begin_measure);
+			
+			if(strcmp(str_from, str_to) != 0) {
+				append_to_str(buffer, sizeof(buffer),
+					"*equate %s %s\n", str_from, str_to);
+			}
+
+			// reset strings
+			strcpy(str_from, "\0");
+			strcpy(str_to, "\0");
+			
 			// link to last measure
-			append_to_str(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
+			append_to_str(str_from, sizeof(str_from), "%d.%d",
 				serie->id_serie,
-				serie_get_measures_length(serie)-1,
+				serie_get_measures_length(serie)); // add 1 in order to get the point
+			append_to_str(str_to, sizeof(str_to), "%d.%d",
 				serie->link_end_serie,
 				serie->link_end_measure);
+			
+			if(strcmp(str_from, str_to) != 0) {
+				append_to_str(buffer, sizeof(buffer),
+					"*equate %s %s\n", str_from, str_to);
+			}
 		}
 		
 		
@@ -131,7 +151,6 @@ void survex_write_serie(Serie *serie)
 
 	// serie title	
 	append_to_str(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
-	printf("name: |%s|", serie->name);
 	
 	// measure corrections
 	survey = serie_get_survey(serie);

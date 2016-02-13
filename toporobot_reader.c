@@ -67,7 +67,7 @@ int toporobot_parse_line(char *buf) {
 		i++;
         strcpy(clean_string(fields[i]), token);
 		token=strtok('\0',separator);
-		printf("f%d:%s|",i,clean_string(fields[i]));
+		//printf("f%d:%s|",i,clean_string(fields[i]));
 	}
 
 	c1 = atoi(fields[1]); // value of first column
@@ -184,13 +184,16 @@ void toporobot_parse_measure() {
 		
 		// copy string and delete last caracter (newline)
 		strcpy(serie->name, fields[10]);
-		printf("name: %s", serie->name);
 		
 		// links the serie's begin and end points
 		serie->link_begin_serie = atoi(fields[3]);
 		serie->link_begin_measure = atoi(fields[4]);
+		if(serie->link_begin_measure > 0)
+			serie->link_begin_measure++; // add 1 to convert measure to point		
 		serie->link_end_serie = atoi(fields[5]);
 		serie->link_end_measure = atoi(fields[6]);
+		if(serie->link_end_measure > 0)
+			serie->link_end_measure++; // add 1 to convert measure to point
 		
 		cave_push_serie(cave,serie);
 	}

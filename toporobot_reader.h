@@ -6,10 +6,10 @@
 #ifndef TOPOROBOT_READER_H
 #define TOPOROBOT_READER_H
 
-#include "functions.h"
 #include "container.h"
 
-#define TOPOROBOT_FIELD_ITEMS 11 // number of fields in a line
+#define FIELD_ITEMS 13 // number of fields in a line
+#define FIELD_SIZE 128
 
 extern int verbose;
 extern Cave *cave;
@@ -19,11 +19,11 @@ extern Survey *survey;
 extern Measure *measure;
 
 void toporobot_process_input_file(const char *filename);
-void toporobot_parse_line(char *buf);
-void toporobot_parse_name(char **fields);
-void toporobot_parse_coordinates(char **fields);
-void toporobot_parse_survey(char **fields);
-void toporobot_parse_code(char **fields);
-void toporobot_parse_measure(char **fields);
+int toporobot_parse_line();
+void toporobot_parse_name();
+void toporobot_parse_coordinates();
+void toporobot_parse_survey();
+void toporobot_parse_code();
+void toporobot_parse_measure();
 
 #endif // survex_writer_h

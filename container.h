@@ -63,7 +63,7 @@ typedef struct {
 
 struct Serie{
 	int id_serie;	// survey id
-	char name[56];
+	char name[256];
 	
 	// temporary first and last point's links
 	int link_begin_serie;

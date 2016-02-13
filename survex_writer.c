@@ -56,19 +56,19 @@ void survex_write_main() {
 
 	// assemble filename
 	strcpy(filename,"\0");
-	appendToStr(filename, sizeof(filename), "%s/main.svx", foldername);
+	append_to_str(filename, sizeof(filename), "%s/main.svx", foldername);
 	
 	// puts
 	strcpy(buffer,"\0");
-	appendToStr(buffer, sizeof(buffer), "*begin\n");
-	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", cave->name);
+	append_to_str(buffer, sizeof(buffer), "*begin\n");
+	append_to_str(buffer, sizeof(buffer), "*title \"%s\"\n", cave->name);
 
 	// blank line
-	appendToStr(buffer, sizeof(buffer), "\n");
+	append_to_str(buffer, sizeof(buffer), "\n");
 	
 	// entrance's coordinates
-	appendToStr(buffer, sizeof(buffer), "*equate entree 1.0\n");
-	appendToStr(buffer, sizeof(buffer), "*fix entree %d %d %d\n\n",
+	append_to_str(buffer, sizeof(buffer), "*equate entree 1.0\n");
+	append_to_str(buffer, sizeof(buffer), "*fix entree %d %d %d\n\n",
 		cave->entrance.x, cave->entrance.y, cave->entrance.z);
 	
 	// include all serie files
@@ -76,13 +76,13 @@ void survex_write_main() {
 		serie = cave_get_serie(cave, i);
 		
 		if(serie) {
-			appendToStr(buffer, sizeof(buffer), "*include surveys/%d\n",
+			append_to_str(buffer, sizeof(buffer), "*include surveys/%d\n",
 				serie->id_serie);
 		}
 	}
 	
 	// blank line
-	appendToStr(buffer, sizeof(buffer), "\n");
+	append_to_str(buffer, sizeof(buffer), "\n");
 	
 	// links series together
 	for(int i=1; i<=cave_get_series_length(cave); i++) {
@@ -90,13 +90,13 @@ void survex_write_main() {
 		
 		if(serie) { 
 			// link to first measure
-			appendToStr(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
+			append_to_str(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
 				serie->id_serie,
 				0,
 				serie->link_begin_serie,
 				serie->link_begin_measure);
 			// link to last measure
-			appendToStr(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
+			append_to_str(buffer, sizeof(buffer), "*equate %d.%d %d.%d\n",
 				serie->id_serie,
 				serie_get_measures_length(serie)-1,
 				serie->link_end_serie,
@@ -107,7 +107,7 @@ void survex_write_main() {
 	}
 	
 	// blank line and end
-	appendToStr(buffer, sizeof(buffer), "\n*end\n");
+	append_to_str(buffer, sizeof(buffer), "\n*end\n");
 	write_buffer(filename);
 }
 
@@ -120,17 +120,17 @@ void survex_write_serie(Serie *serie)
 	// assemble filename
 	
 	strcpy(filename,"\0");
-	appendToStr(filename, sizeof(filename),
+	append_to_str(filename, sizeof(filename),
 		"%s/surveys/%d.svx", foldername, serie->id_serie);
 
 	// begin serie
 	strcpy(buffer,"\0"); 	// empty buffer
 	
 	// serie begin and newline
-	appendToStr(buffer, sizeof(buffer), "*begin %d\n\n", serie->id_serie);
+	append_to_str(buffer, sizeof(buffer), "*begin %d\n\n", serie->id_serie);
 
 	// serie title	
-	appendToStr(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
+	append_to_str(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
 	
 	// measure corrections
 	survey = serie_get_survey(serie);
@@ -138,13 +138,13 @@ void survex_write_serie(Serie *serie)
 	{
 		// azimuth correction
 		if(survey->correction_azimuth != 0) {
-			appendToStr(buffer, sizeof(buffer), "*CALIBRATE COMPASS %.2f\n",
+			append_to_str(buffer, sizeof(buffer), "*CALIBRATE COMPASS %.2f\n",
 				survey->correction_azimuth);
 		}
 	
 		// dip correction
 		if(survey->correction_dip != 0) {
-			appendToStr(buffer, sizeof(buffer), "*CALIBRATE CLINO %.2f\n",
+			append_to_str(buffer, sizeof(buffer), "*CALIBRATE CLINO %.2f\n",
 				survey->correction_dip);
 		}
 	}
@@ -163,7 +163,7 @@ void survex_write_serie(Serie *serie)
 				fprintf(stderr,"Error: unexpexted azimuth unit\n");
 				exit(1);
 		}
-		appendToStr(buffer,sizeof(buffer), "*UNITS COMPASS %s\n", unit_azimuth);
+		append_to_str(buffer,sizeof(buffer), "*UNITS COMPASS %s\n", unit_azimuth);
 		
 		switch (code->unit_dip) {
 			case 360:
@@ -179,17 +179,17 @@ void survex_write_serie(Serie *serie)
 				fprintf(stderr,"Error: unexpexted dip unit\n");
 				exit(1);
 		}
-		appendToStr(buffer, sizeof(buffer), "*UNITS CLINO %s\n", unit_dip);
+		append_to_str(buffer, sizeof(buffer), "*UNITS CLINO %s\n", unit_dip);
 	}
 	
 	
 	// append measures
-	appendToStr(buffer, sizeof(buffer),
+	append_to_str(buffer, sizeof(buffer),
 		"\n*data normal from to tape compass clino\n");
 	
 	for(int i=0; i<serie_get_measures_length(serie); i++) {
 		measure = serie_get_measure(serie, i);
-		appendToStr(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f\n",
+		append_to_str(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f\n",
 			i,
 			i+1,
 			measure->length,
@@ -199,12 +199,12 @@ void survex_write_serie(Serie *serie)
 	}
 	
 	// append passage
-	appendToStr(buffer, sizeof(buffer),
+	append_to_str(buffer, sizeof(buffer),
 		"\n*data passage station left right up down ignoreall\n");
 	
 	for(int i=0; i<serie_get_measures_length(serie); i++) {
 		measure = serie_get_measure(serie, i);
-		appendToStr(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f\t%.2f\n",
+		append_to_str(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f\t%.2f\n",
 			i,
 			i+1,
 			measure->left,
@@ -215,7 +215,7 @@ void survex_write_serie(Serie *serie)
 	}
 	
 	// blank line and end serie
-	appendToStr(buffer, sizeof(buffer), "\n*end %d\n",serie->id_serie);
+	append_to_str(buffer, sizeof(buffer), "\n*end %d\n",serie->id_serie);
 	
 	// write to file
 	write_buffer(filename);

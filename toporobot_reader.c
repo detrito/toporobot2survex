@@ -7,26 +7,34 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "functions.h"
 #include "toporobot_reader.h"
 
 int c1 = 0;
+char fields[FIELD_ITEMS][FIELD_SIZE]={0x0}; // array of fields
 
 void toporobot_process_input_file(const char *filename) {
 	int i = 0; // line counter
-	char buf[256]; // line bouffer
-	
+	char buf[256]={0x0}; // line bouffer
+
 	// read input file
 	FILE *file = fopen ( filename, "r" );
 
+
 	// load a line in the buffer
-	while (fgets (buf, sizeof(buf), file)) {
-		i++;
-		
-		if(verbose) {
-			printf("\n%i ",i);
+	if(file!=NULL) {
+		// read a line
+		while ( fgets(buf,sizeof(buf),file) != 0 ) { 
+			i++;
+			if(verbose) {
+				printf("\n%d ",i);
+			}
+			toporobot_parse_line(buf);
 		}
-		
-		toporobot_parse_line(buf);
+	}
+	else {
+		fprintf(stderr,"Error openinf file %s\n", filename);
+		abort();	
 	}
 	
 	if (ferror(stdin)) {
@@ -35,22 +43,23 @@ void toporobot_process_input_file(const char *filename) {
 	}
 }
 
-void toporobot_parse_line(char *buf) {
-	const char s[] = "\t";	// tabulator as separator
-	char *token; // token between separators
-	char *fields[TOPOROBOT_FIELD_ITEMS];	// vector of tokens
+int toporobot_parse_line(char *buf) {
+	const char separator[] = "\t";	// tabulator as separator
+	const char newline[] = "\n"; // tabulator as separator
+	
 	int i = 0; // but start putting token at position 1
-		
+
 	// get the first token
-	token = strtok(buf, s);
+	char *token = strtok(buf, separator);
 	
-	// get tokens until the end of the buffer
-	while( token != NULL ) {
+    while(token && strcmp(token, newline)!=0)
+    {
 		i++;
-		fields[i] = token;
-		token = strtok(NULL, s); // get next token
+        strcpy(clean_string(fields[i]), token);
+		token=strtok('\0',separator);
+		//printf("f%d:%s|",i,clean_string(fields[i]));
 	}
-	
+		
 	c1 = atoi(fields[1]); // value of first column
 	
 	switch (c1) {
@@ -58,32 +67,32 @@ void toporobot_parse_line(char *buf) {
 			if(verbose) {
 				printf("Name - ");
 			}
-			toporobot_parse_name(fields);
+			toporobot_parse_name();
 			break;
 		case -5:
 			if(verbose) {
 				printf("Coordinates - ");
 			}
-			toporobot_parse_coordinates(fields);
+			toporobot_parse_coordinates();
 			break;
 		case -2:
 			if(verbose) {
 				printf("Survey - ");
 			}
-			toporobot_parse_survey(fields);
+			toporobot_parse_survey();
 			break;
 		case -1:
 			if(verbose) {
 				printf("Code - ");
 			}
-			toporobot_parse_code(fields);			
+			toporobot_parse_code();			
 			break;
 		default:
 			if(c1>=1) {
 				if(verbose) {
 					printf("Measure - ");
 				}
-				toporobot_parse_measure(fields);
+				toporobot_parse_measure();
 			}
 			else {
 				if(verbose) {
@@ -93,19 +102,19 @@ void toporobot_parse_line(char *buf) {
 	}
 }
 
-void toporobot_parse_name(char **fields) {
+void toporobot_parse_name() {
 	// copy string and delete last caracter (newline)
-	strncpy(cave->name, fields[3], strlen(fields[3])-1);
+	strcpy(cave->name, fields[3]);
 }
 
-void toporobot_parse_coordinates(char **fields) {
+void toporobot_parse_coordinates() {
 	// coordinates of the first point of the first serie
 	cave->entrance.x = atoi(fields[3]);
 	cave->entrance.y = atoi(fields[4]);
 	cave->entrance.z = atoi(fields[5]);
 }
 
-void toporobot_parse_survey(char **fields) {
+void toporobot_parse_survey() {
 	// allocate the memory for the Serie
 	if(verbose) {
 		printf("Alloating Survey memory... ");
@@ -120,12 +129,12 @@ void toporobot_parse_survey(char **fields) {
 	strcpy(survey->name_person_drawing, fields[7]); // spéléographe
 	survey->auto_declination = atoi(fields[8]);// declination (0=manual)	
 	survey->correction_azimuth = atof(fields[9]); // azimuth correction
-	survey->correction_dip = atof(fields[10]); // azimuth correction	
+	survey->correction_dip = atof(fields[10]); // azimuth correction
 	
 	cave_push_survey(cave, survey);
 }
 
-void toporobot_parse_code(char **fields) {
+void toporobot_parse_code() {
 	int id_code;
 
 	id_code = atoi(fields[2]);
@@ -149,11 +158,11 @@ void toporobot_parse_code(char **fields) {
 		serie->correction_azimuth = atof(fields[8]);
 	}
 	*/
-	
+	//printf("code: %i %i %f %f %f", code->unit_azimuth,code->unit_dip, code->accuracy_length, code->accuracy_azimuth, code->accuracy_dip);
 	cave_set_code(cave, code, id_code);
 }
 
-void toporobot_parse_measure(char **fields) {
+void toporobot_parse_measure() {
 	int id_measure;
 	id_measure = atoi(fields[2]);
 	
@@ -162,16 +171,14 @@ void toporobot_parse_measure(char **fields) {
 		if(verbose) {
 			printf("Alloating Serie memory... ");
 		}
-		//serie = (Serie*) malloc(sizeof (Serie));
+
 		serie = (Serie*) malloc(sizeof (Serie) +
 			MAX_MEASURE_POINTERS * sizeof(Measure*));
 		
 		serie->id_serie = c1;
-		//cave_add_serie(cave, serie, c1);
 		
 		// copy string and delete last caracter (newline)
-		strncpy(serie->name, fields[10],
-			strlen(fields[10])-1);	
+		strcpy(serie->name, fields[10]);
 		
 		// links the serie's begin and end points
 		serie->link_begin_serie = atoi(fields[3]);
@@ -185,7 +192,9 @@ void toporobot_parse_measure(char **fields) {
 	else {
 		// set serie's survey and code from the first measure-line
 		if(id_measure == 0) {
+			// associate code
 			code = cave_get_code(cave, atoi(fields[3]));
+
 			if(code) {
 				serie_set_code(serie, code);
 			}
@@ -193,7 +202,8 @@ void toporobot_parse_measure(char **fields) {
 				fprintf(stderr,"Error: code %d not found\n", code);
 				abort();
 			}
-		
+
+			// associate serie		
 			survey = cave_get_survey(cave, atoi(fields[4]));
 			if(survey) {
 				serie_set_survey(serie, survey);
@@ -204,7 +214,7 @@ void toporobot_parse_measure(char **fields) {
 			}
 		}
 		
-		// allocate the memory for a measure		
+		// allocate the memory for a measure
 		measure = (Measure*) malloc(sizeof (Measure));
 		measure->length = atof(fields[5]);
 		measure->azimuth = atof(fields[6]);
@@ -216,9 +226,8 @@ void toporobot_parse_measure(char **fields) {
 		
 		// seto pointer to serie
 		measure->serie = serie;
-		printf("asd\n");
-		// push the measure to the end of the vector of pointers to Series 
+
+		// push the measure to the end of the vector of pointers to Series
 		serie_push_measure(serie, measure);
-		printf("asd_end\n");
 	}
 }

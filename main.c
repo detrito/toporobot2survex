@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "toporobot_reader.h"
+#include "functions.h"
 #include "container.h"
 #include "survex_writer.h"
 

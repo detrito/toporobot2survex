@@ -49,7 +49,7 @@ int init_output_file(char *filename) {
 	}
 }	
 
-int appendToStr (char *target, size_t targetSize,
+int append_to_str (char *target, size_t targetSize,
 	const char * restrict format,...) {
 	
 	va_list args;
@@ -71,3 +71,20 @@ int appendToStr (char *target, size_t targetSize,
 	return result;
 }
 
+char *clean_string(char *p) {
+	return remove_quote(remove_newline(p));
+}
+
+char *remove_quote(char *p) {
+	if (p[0] == '"') {
+		if (p[strlen(p)-1] == '"')
+			p[strlen(p)-1] = '\0';
+		p++;
+	}
+	return p;
+}
+
+char *remove_newline(char *p) {
+	p[strcspn(p, "\n")] = 0;
+	return p;
+}

@@ -131,6 +131,7 @@ void survex_write_serie(Serie *serie)
 
 	// serie title	
 	append_to_str(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
+	printf("name: |%s|", serie->name);
 	
 	// measure corrections
 	survey = serie_get_survey(serie);
@@ -206,7 +207,7 @@ void survex_write_serie(Serie *serie)
 		measure = serie_get_measure(serie, i);
 		append_to_str(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f\t%.2f\n",
 			i,
-			i+1,
+			i+1, // this is the name of the station
 			measure->left,
 			measure->right,
 			measure->up,

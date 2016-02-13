@@ -97,9 +97,6 @@ void cave_close(Cave *cave) {
  * serie functions
  */
 
-int serie_get_measures_length(Serie *serie);
-
-
 void serie_push_measure(Serie *serie, Measure *measure) {
 	// push pointer to measure to vector v_measures
 	vector_push_back(serie->v_measures, measure);

@@ -9,7 +9,7 @@
 #include "container.h"
 
 #define FIELD_ITEMS 13 // number of fields in a line
-#define FIELD_SIZE 128
+#define FIELD_SIZE 256
 
 extern int verbose;
 extern Cave *cave;

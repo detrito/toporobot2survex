@@ -12,6 +12,9 @@
 
 int c1 = 0;
 char fields[FIELD_ITEMS][FIELD_SIZE]={0x0}; // array of fields
+const char separator[] = "\t";	// tabulator as separator
+const char newline[] = "\n"; // tabulator as separator
+	
 
 void toporobot_process_input_file(const char *filename) {
 	int i = 0; // line counter
@@ -29,7 +32,17 @@ void toporobot_process_input_file(const char *filename) {
 			if(verbose) {
 				printf("\n%d ",i);
 			}
-			toporobot_parse_line(buf);
+			
+			// parse this line, if the line is not empty
+			if( strncmp(buf, newline, strlen(newline)) !=0
+				&& strncmp(buf, separator, strlen(separator)) !=0) {
+				toporobot_parse_line(buf);
+			}
+			else {
+				if(verbose) {
+					printf("Blank line");
+				}
+			}
 		}
 	}
 	else {
@@ -44,22 +57,19 @@ void toporobot_process_input_file(const char *filename) {
 }
 
 int toporobot_parse_line(char *buf) {
-	const char separator[] = "\t";	// tabulator as separator
-	const char newline[] = "\n"; // tabulator as separator
-	
 	int i = 0; // but start putting token at position 1
 
 	// get the first token
 	char *token = strtok(buf, separator);
 	
-    while(token && strcmp(token, newline)!=0)
+    while(token!=0)
     {
 		i++;
         strcpy(clean_string(fields[i]), token);
 		token=strtok('\0',separator);
-		//printf("f%d:%s|",i,clean_string(fields[i]));
+		printf("f%d:%s|",i,clean_string(fields[i]));
 	}
-		
+
 	c1 = atoi(fields[1]); // value of first column
 	
 	switch (c1) {
@@ -93,11 +103,6 @@ int toporobot_parse_line(char *buf) {
 					printf("Measure - ");
 				}
 				toporobot_parse_measure();
-			}
-			else {
-				if(verbose) {
-					printf("Assuming newline");
-				}
 			}
 	}
 }
@@ -179,6 +184,7 @@ void toporobot_parse_measure() {
 		
 		// copy string and delete last caracter (newline)
 		strcpy(serie->name, fields[10]);
+		printf("name: %s", serie->name);
 		
 		// links the serie's begin and end points
 		serie->link_begin_serie = atoi(fields[3]);

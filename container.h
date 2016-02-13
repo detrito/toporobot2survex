@@ -89,7 +89,7 @@ typedef struct {
 } Coordinate;
 
 typedef struct {
-	char name[56];
+	char name[256];
 	
 	Coordinate entrance; // coordinates of the first point of the first serie
 	

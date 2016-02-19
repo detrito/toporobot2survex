@@ -30,7 +30,7 @@ typedef struct {
 	float right;
 	float left;
 	
-	char* comment;
+	char comment [256];
 	
 	Serie *serie; // pointer to serie
 } Measure;

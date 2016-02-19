@@ -11,6 +11,7 @@
 #include "toporobot_reader.h"
 
 int c1 = 0;
+int field_counter = 0;
 char fields[FIELD_ITEMS][FIELD_SIZE]={0x0}; // array of fields
 const char separator[] = "\t";	// tabulator as separator
 const char newline[] = "\n"; // tabulator as separator
@@ -57,15 +58,15 @@ void toporobot_process_input_file(const char *filename) {
 }
 
 int toporobot_parse_line(char *buf) {
-	int i = 0; // but start putting token at position 1
+	field_counter = 0; // but start putting token at position 1
 
 	// get the first token
 	char *token = strtok(buf, separator);
 	
     while(token!=0)
     {
-		i++;
-        strcpy(clean_string(fields[i]), token);
+		field_counter++;
+        strcpy(fields[field_counter], clean_string(token));
 		token=strtok('\0',separator);
 		//printf("f%d:%s|",i,clean_string(fields[i]));
 	}
@@ -232,6 +233,11 @@ void toporobot_parse_measure() {
 		measure->right = atof(fields[9]);
 		measure->up = atof(fields[10]);
 		measure->down = atof(fields[11]);
+		
+		if(field_counter == 12 && strcmp(fields[12], "")!=0) {
+			//printf("field:  |%s|", fields[12]);
+			strcpy(measure->comment, fields[12]);
+		}
 		
 		// seto pointer to serie
 		measure->serie = serie;

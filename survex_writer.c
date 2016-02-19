@@ -167,7 +167,7 @@ void survex_write_serie(Serie *serie)
 				survey->correction_dip);
 		}
 	}
-		
+	
 	// units
 	code = serie_get_code(serie);
 	if(code) {		
@@ -208,13 +208,22 @@ void survex_write_serie(Serie *serie)
 	
 	for(int i=0; i<serie_get_measures_length(serie); i++) {
 		measure = serie_get_measure(serie, i);
-		append_to_str(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f\n",
+		append_to_str(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f",
 			i,	// previous station
 			i+1, 
 			measure->length,
 			measure->azimuth,
 			measure->dip
 		);
+		
+		// append comment if exists
+		if(measure->comment && strcmp(measure->comment, "")!=0) {
+			append_to_str(buffer, sizeof(buffer), "\t;\%s",
+				measure->comment);
+		}
+		
+		//newline
+		append_to_str(buffer, sizeof(buffer), "\n");		
 	}
 	
 	// append measured gallery width ("passage" in survex)

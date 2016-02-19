@@ -8,7 +8,7 @@
 
 #include "container.h"
 
-#define FIELD_ITEMS 13 // number of fields in a line
+#define FIELD_ITEMS 13 // number of fields in a csv line (12 items starting at position 1)
 #define FIELD_SIZE 256
 
 extern int verbose;

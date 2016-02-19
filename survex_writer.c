@@ -131,7 +131,6 @@ void survex_write_main() {
 	write_buffer(filename);
 }
 
-
 void survex_write_serie(Serie *serie)
 {
 	char unit_azimuth[16];
@@ -203,29 +202,28 @@ void survex_write_serie(Serie *serie)
 	}
 	
 	
-	// append measures
+	// append measured vector ("measure" in survex)
 	append_to_str(buffer, sizeof(buffer),
 		"\n*data normal from to tape compass clino\n");
 	
 	for(int i=0; i<serie_get_measures_length(serie); i++) {
 		measure = serie_get_measure(serie, i);
 		append_to_str(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f\n",
-			i,
-			i+1,
+			i,	// previous station
+			i+1, 
 			measure->length,
 			measure->azimuth,
 			measure->dip
 		);
 	}
 	
-	// append passage
+	// append measured gallery width ("passage" in survex)
 	append_to_str(buffer, sizeof(buffer),
 		"\n*data passage station left right up down ignoreall\n");
 	
 	for(int i=0; i<serie_get_measures_length(serie); i++) {
 		measure = serie_get_measure(serie, i);
-		append_to_str(buffer, sizeof(buffer), "%d\t%d\t%.2f\t%.2f\t%.2f\t%.2f\n",
-			i,
+		append_to_str(buffer, sizeof(buffer), "%d\t%.2f\t%.2f\t%.2f\t%.2f\n",
 			i+1, // this is the name of the station
 			measure->left,
 			measure->right,

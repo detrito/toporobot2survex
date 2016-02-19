@@ -15,7 +15,6 @@
 #define PROGRAM_NAME "toporobot2survex"
 #define VERSION "0.0.1"
 
-// temporary pointers to objects
 Cave *cave;
 Survey *survey;
 Code *code;
@@ -54,7 +53,7 @@ int main (int argc, char *argv[]) {
 				+ MAX_CODE_POINTERS * sizeof(Code*)
 				+ MAX_LINK_POINTERS * sizeof(Link*));
 
-			// process input file
+			// read the cave in toporobot data format
 			toporobot_process_input_file(argv[1]);
 	
 			// TODO: create graph of links
@@ -65,35 +64,15 @@ int main (int argc, char *argv[]) {
 				printf("\nWriting to output files...\n");
 			}
 			
-			survex_write_cave(argv[2]);
-			
-			/*
-			// debug
-			int n = 2;
-			survey = cave_get_survey(cave, n);	
-			printf("CAVE survey %d, name_person_measuring %s, name_person_drawing %s \n",
-				n, survey->name_person_measuring, survey->name_person_drawing);
-	
-			int k = 5;
-			serie = cave_get_serie(cave, n);
-			measure = serie_get_measure(serie, k);
-	
-			printf("SERIE %d measure %d: %f/%f/%f\n",
-				serie->id_serie, k, measure->azimuth, measure->dip, measure->length);
-	
-			n = 40;
-			code = cave_get_code(cave, n);
-			printf("CODE %d: unit az %d, unit dip %d\n",
-				n, code->unit_azimuth, code->unit_dip);
+			// write the cave in survex data format
+			survex_write_cave(argv[2]);			
 	
 			// free all dynamical allocated memory
-			printf("Closing cave... ");
+			printf("Closing cave...\n");
 			cave_close(cave);
-			printf("done.\n");
-			*/
 
 			if(verbose) {
-				printf("Done. Exiting.\n");
+				printf("Exiting.\n");
 			}
 
 			return 0;

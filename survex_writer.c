@@ -67,7 +67,7 @@ void survex_write_main() {
 	append_to_str(buffer, sizeof(buffer), "\n");
 	
 	// entrance's coordinates
-	append_to_str(buffer, sizeof(buffer), "*equate entree 1.0\n");
+	append_to_str(buffer, sizeof(buffer), "*equate entree s1.0\n");
 	append_to_str(buffer, sizeof(buffer), "*fix entree %d %d %d\n\n",
 		cave->entrance.x, cave->entrance.y, cave->entrance.z);
 	
@@ -76,7 +76,7 @@ void survex_write_main() {
 		serie = cave_get_serie(cave, i);
 		
 		if(serie) {
-			append_to_str(buffer, sizeof(buffer), "*include surveys/%d\n",
+			append_to_str(buffer, sizeof(buffer), "*include surveys/s%d\n",
 				serie->id_serie);
 		}
 	}
@@ -93,10 +93,10 @@ void survex_write_main() {
 			char str_to[256] = "\0";
 			
 			// link to first measure
-			append_to_str(str_from, sizeof(str_from), "%d.%d",
+			append_to_str(str_from, sizeof(str_from), "s%d.%d",
 				serie->id_serie,
 				0);				
-			append_to_str(str_to, sizeof(str_to), "%d.%d",
+			append_to_str(str_to, sizeof(str_to), "s%d.%d",
 				serie->link_begin_serie,
 				serie->link_begin_measure);
 			
@@ -110,10 +110,10 @@ void survex_write_main() {
 			strcpy(str_to, "\0");
 			
 			// link to last measure
-			append_to_str(str_from, sizeof(str_from), "%d.%d",
+			append_to_str(str_from, sizeof(str_from), "s%d.%d",
 				serie->id_serie,
 				serie_get_measures_length(serie)); // add 1 in order to get the point
-			append_to_str(str_to, sizeof(str_to), "%d.%d",
+			append_to_str(str_to, sizeof(str_to), "s%d.%d",
 				serie->link_end_serie,
 				serie->link_end_measure);
 			
@@ -140,13 +140,13 @@ void survex_write_serie(Serie *serie)
 	
 	strcpy(filename,"\0");
 	append_to_str(filename, sizeof(filename),
-		"%s/surveys/%d.svx", foldername, serie->id_serie);
+		"%s/surveys/s%d.svx", foldername, serie->id_serie);
 
 	// begin serie
 	strcpy(buffer,"\0"); 	// empty buffer
 	
 	// serie begin and newline
-	append_to_str(buffer, sizeof(buffer), "*begin %d\n\n", serie->id_serie);
+	append_to_str(buffer, sizeof(buffer), "*begin s%d\n\n", serie->id_serie);
 
 	// serie title	
 	append_to_str(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
@@ -233,7 +233,7 @@ void survex_write_serie(Serie *serie)
 	}
 	
 	// blank line and end serie
-	append_to_str(buffer, sizeof(buffer), "\n*end %d\n",serie->id_serie);
+	append_to_str(buffer, sizeof(buffer), "\n*end s%d\n",serie->id_serie);
 	
 	// write to file
 	write_buffer(filename);

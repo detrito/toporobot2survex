@@ -157,13 +157,13 @@ void survex_write_serie(Serie *serie)
 	{
 		// azimuth correction
 		if(survey->correction_azimuth != 0) {
-			append_to_str(buffer, sizeof(buffer), "*CALIBRATE COMPASS %.2f\n",
+			append_to_str(buffer, sizeof(buffer), "*calibrate compass %.2f\n",
 				survey->correction_azimuth);
 		}
 	
 		// dip correction
 		if(survey->correction_dip != 0) {
-			append_to_str(buffer, sizeof(buffer), "*CALIBRATE CLINO %.2f\n",
+			append_to_str(buffer, sizeof(buffer), "*calibrate clino %.2f\n",
 				survey->correction_dip);
 		}
 	}
@@ -173,32 +173,32 @@ void survex_write_serie(Serie *serie)
 	if(code) {		
 		switch (code->unit_azimuth) {
 			case 360:
-				strcpy(unit_azimuth,"DEGREES");
+				strcpy(unit_azimuth,"degrees");
 				break;
 			case 400:
-				strcpy(unit_azimuth,"GRADS");
+				strcpy(unit_azimuth,"grads");
 				break;
 			default:
 				fprintf(stderr,"Error: unexpexted azimuth unit\n");
 				exit(1);
 		}
-		append_to_str(buffer,sizeof(buffer), "*UNITS COMPASS %s\n", unit_azimuth);
+		append_to_str(buffer,sizeof(buffer), "*units compass %s\n", unit_azimuth);
 		
 		switch (code->unit_dip) {
 			case 360:
-				strcpy(unit_dip,"DEGREES");
+				strcpy(unit_dip,"degrees");
 				break;
 			case 400:
-				strcpy(unit_dip,"GRADS");
+				strcpy(unit_dip,"grads");
 				break;
 			case 370:
-				strcpy(unit_dip,"PERCENT");
+				strcpy(unit_dip,"percent");
 				break;			
 			default:
 				fprintf(stderr,"Error: unexpexted dip unit\n");
 				exit(1);
 		}
-		append_to_str(buffer, sizeof(buffer), "*UNITS CLINO %s\n", unit_dip);
+		append_to_str(buffer, sizeof(buffer), "*units clino %s\n", unit_dip);
 	}
 	
 	

@@ -64,7 +64,7 @@ void survex_write_main() {
 	append_to_str(buffer, sizeof(buffer), "*title \"%s\"\n", cave->name);
 
 	// blank line
-	append_to_str(buffer, sizeof(buffer), "\n");
+	append_to_str(buffer, sizeof(buffer), "\n");	
 	
 	// entrance's coordinates
 	append_to_str(buffer, sizeof(buffer), "*equate entree s1.0\n");
@@ -150,6 +150,16 @@ void survex_write_serie(Serie *serie)
 
 	// serie title	
 	append_to_str(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
+	
+		
+	// team
+	append_to_str(buffer, sizeof(buffer), "*team %s compass clino tape\n",
+		serie->survey->name_person_measuring);
+	append_to_str(buffer, sizeof(buffer), "*team %s notes\n",
+		serie->survey->name_person_drawing);
+	
+	// blank line
+	append_to_str(buffer, sizeof(buffer), "\n");
 	
 	// measure corrections
 	survey = serie_get_survey(serie);

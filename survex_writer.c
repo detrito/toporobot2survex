@@ -151,6 +151,10 @@ void survex_write_serie(Serie *serie)
 	// serie title	
 	append_to_str(buffer, sizeof(buffer), "*title \"%s\"\n", serie->name);
 	
+	// date
+	append_to_str(buffer, sizeof(buffer), "*date %d.%d.%d\n",
+		serie->survey->year, serie->survey->month, serie->survey->day);
+	
 		
 	// team
 	append_to_str(buffer, sizeof(buffer), "*team %s compass clino tape\n",

@@ -131,6 +131,15 @@ void toporobot_parse_survey() {
 	survey->day = atoi(fields[3]); // day
 	survey->month = atoi(fields[4]); // month
 	survey->year = atoi(fields[5]); // year	
+	
+	// if year has less then 2 digits ( 98 or 8)
+	if( strlen(fields[5]) <= 2) {
+		if (survey->year <= 99 && survey->year >= 40)
+			survey->year += 1900;
+		else
+			survey->year += 2000;
+	}
+	
 	strcpy(survey->name_person_measuring, fields[6]); // spéléomètre
 	strcpy(survey->name_person_drawing, fields[7]); // spéléographe
 	survey->auto_declination = atoi(fields[8]);// declination (0=manual)	

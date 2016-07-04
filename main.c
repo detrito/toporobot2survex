@@ -11,9 +11,10 @@
 #include "functions.h"
 #include "container.h"
 #include "survex_writer.h"
+#include "vector.h"
 
 #define PROGRAM_NAME "toporobot2survex"
-#define VERSION "0.0.1"
+#define VERSION "0.1"
 
 Cave *cave;
 Survey *survey;
@@ -22,8 +23,6 @@ Serie *serie;
 Measure *measure;
 
 int verbose = 1;
-
-#include "vector.h"
 
 int print_help() {
 	printf("USE: " PROGRAM_NAME " [input toporobot file] [destination survex folder]\n");

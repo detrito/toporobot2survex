@@ -122,8 +122,6 @@ void survex_write_main() {
 					"*equate %s %s\n", str_from, str_to);
 			}
 		}
-		
-		
 	}
 	
 	// blank line and end
@@ -131,8 +129,7 @@ void survex_write_main() {
 	write_buffer(filename);
 }
 
-void survex_write_serie(Serie *serie)
-{
+void survex_write_serie(Serie *serie) {
 	char unit_azimuth[16];
 	char unit_dip[16];
 
@@ -167,8 +164,7 @@ void survex_write_serie(Serie *serie)
 	
 	// measure corrections
 	survey = serie_get_survey(serie);
-	if(survey)
-	{
+	if(survey) {
 		// azimuth correction
 		if(survey->correction_azimuth != 0) {
 			append_to_str(buffer, sizeof(buffer), "*calibrate compass %.2f\n",

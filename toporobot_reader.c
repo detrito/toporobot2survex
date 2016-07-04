@@ -15,7 +15,6 @@ int field_counter = 0;
 char fields[FIELD_ITEMS][FIELD_SIZE]={0x0}; // array of fields
 const char separator[] = "\t";	// tabulator as separator
 const char newline[] = "\n"; // tabulator as separator
-	
 
 void toporobot_process_input_file(const char *filename) {
 	int i = 0; // line counter
@@ -23,7 +22,6 @@ void toporobot_process_input_file(const char *filename) {
 
 	// read input file
 	FILE *file = fopen ( filename, "r" );
-
 
 	// load a line in the buffer
 	if(file!=NULL) {
@@ -63,12 +61,10 @@ int toporobot_parse_line(char *buf) {
 	// get the first token
 	char *token = strtok(buf, separator);
 	
-    while(token!=0)
-    {
+	while(token!=0) {
 		field_counter++;
-        strcpy(fields[field_counter], clean_string(token));
+		strcpy(fields[field_counter], clean_string(token));
 		token=strtok('\0',separator);
-		//printf("f%d:%s|",i,clean_string(fields[i]));
 	}
 
 	c1 = atoi(fields[1]); // value of first column
@@ -173,7 +169,6 @@ void toporobot_parse_code() {
 		serie->correction_azimuth = atof(fields[8]);
 	}
 	*/
-	//printf("code: %i %i %f %f %f", code->unit_azimuth,code->unit_dip, code->accuracy_length, code->accuracy_azimuth, code->accuracy_dip);
 	cave_set_code(cave, code, id_code);
 }
 
@@ -244,7 +239,6 @@ void toporobot_parse_measure() {
 		measure->down = atof(fields[11]);
 		
 		if(field_counter == 12 && strcmp(fields[12], "")!=0) {
-			//printf("field:  |%s|", fields[12]);
 			strcpy(measure->comment, fields[12]);
 		}
 		

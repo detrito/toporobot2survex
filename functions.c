@@ -33,7 +33,7 @@ int create_path(char *filename) {
 	path = dirname(cfilename);
 	
 	if (stat(path, &st) == -1) {
-    	return mkdir(path, 0700);
+		return mkdir(path, 0700);
 	}
 	return 0;
 }

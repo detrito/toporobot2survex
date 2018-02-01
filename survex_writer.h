@@ -2,7 +2,7 @@
  * author: detrito
  * date: january 2016
  */
- 
+
 #ifndef SURVEX_WRITER_H
 #define SURVEX_WRITER_H
 

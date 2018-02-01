@@ -26,12 +26,12 @@ void toporobot_process_input_file(const char *filename) {
 	// load a line in the buffer
 	if(file!=NULL) {
 		// read a line
-		while ( fgets(buf,sizeof(buf),file) != 0 ) { 
+		while ( fgets(buf,sizeof(buf),file) != 0 ) {
 			i++;
 			if(verbose) {
 				printf("\n%d ",i);
 			}
-			
+
 			// parse this line, if the line is not empty
 			if( strncmp(buf, newline, strlen(newline)) !=0
 				&& strncmp(buf, separator, strlen(separator)) !=0) {
@@ -45,10 +45,10 @@ void toporobot_process_input_file(const char *filename) {
 		}
 	}
 	else {
-		fprintf(stderr,"Error openinf file %s\n", filename);
-		abort();	
+		fprintf(stderr,"Error opening file %s\n", filename);
+		abort();
 	}
-	
+
 	if (ferror(stdin)) {
 		fprintf(stderr,"Error reading stdin\n");
 		abort();
@@ -60,7 +60,7 @@ int toporobot_parse_line(char *buf) {
 
 	// get the first token
 	char *token = strtok(buf, separator);
-	
+
 	while(token!=0) {
 		field_counter++;
 		strcpy(fields[field_counter], clean_string(token));
@@ -68,7 +68,7 @@ int toporobot_parse_line(char *buf) {
 	}
 
 	c1 = atoi(fields[1]); // value of first column
-	
+
 	switch (c1) {
 		case -6:
 			if(verbose) {
@@ -92,7 +92,7 @@ int toporobot_parse_line(char *buf) {
 			if(verbose) {
 				printf("Code - ");
 			}
-			toporobot_parse_code();			
+			toporobot_parse_code();
 			break;
 		default:
 			if(c1>=1) {
@@ -119,15 +119,15 @@ void toporobot_parse_coordinates() {
 void toporobot_parse_survey() {
 	// allocate the memory for the Serie
 	if(verbose) {
-		printf("Alloating Survey memory... ");
+		printf("Allocating Survey memory... ");
 	}
-	
+
 	survey = (Survey*) malloc(sizeof (Survey));
-	
+
 	survey->day = atoi(fields[3]); // day
 	survey->month = atoi(fields[4]); // month
-	survey->year = atoi(fields[5]); // year	
-	
+	survey->year = atoi(fields[5]); // year
+
 	// if year has less then 2 digits ( 98 or 8)
 	if( strlen(fields[5]) <= 2) {
 		if (survey->year <= 99 && survey->year >= 40)
@@ -135,13 +135,13 @@ void toporobot_parse_survey() {
 		else
 			survey->year += 2000;
 	}
-	
+
 	strcpy(survey->name_person_measuring, fields[6]); // spéléomètre
 	strcpy(survey->name_person_drawing, fields[7]); // spéléographe
-	survey->auto_declination = atoi(fields[8]);// declination (0=manual)	
+	survey->auto_declination = atoi(fields[8]);// declination (0=manual)
 	survey->correction_azimuth = atof(fields[9]); // azimuth correction
 	survey->correction_dip = atof(fields[10]); // azimuth correction
-	
+
 	cave_push_survey(cave, survey);
 }
 
@@ -157,7 +157,7 @@ void toporobot_parse_code() {
 	// units
 	code->unit_azimuth = atoi(fields[3]);
 	code->unit_dip = atoi(fields[4]);
-	
+
 	// accuracy
 	code->accuracy_length = atof(fields[5]);
 	code->accuracy_azimuth = atof(fields[6]);
@@ -175,31 +175,31 @@ void toporobot_parse_code() {
 void toporobot_parse_measure() {
 	int id_measure;
 	id_measure = atoi(fields[2]);
-	
+
 	// -1 at column 2: begin of a new serie
 	if( id_measure == -1) {
 		if(verbose) {
-			printf("Alloating Serie memory... ");
+			printf("Allocating Serie memory... ");
 		}
 
 		serie = (Serie*) malloc(sizeof (Serie) +
 			MAX_MEASURE_POINTERS * sizeof(Measure*));
-		
+
 		serie->id_serie = c1;
-		
+
 		// copy string and delete last caracter (newline)
 		strcpy(serie->name, fields[10]);
-		
+
 		// links the serie's begin and end points
 		serie->link_begin_serie = atoi(fields[3]);
 		serie->link_begin_measure = atoi(fields[4]);
 		if(serie->link_begin_measure > 0)
-			serie->link_begin_measure++; // add 1 to convert measure to point		
+			serie->link_begin_measure++; // add 1 to convert measure to point
 		serie->link_end_serie = atoi(fields[5]);
 		serie->link_end_measure = atoi(fields[6]);
 		if(serie->link_end_measure > 0)
 			serie->link_end_measure++; // add 1 to convert measure to point
-		
+
 		cave_push_serie(cave,serie);
 	}
 
@@ -217,7 +217,7 @@ void toporobot_parse_measure() {
 				abort();
 			}
 
-			// associate serie		
+			// associate serie
 			survey = cave_get_survey(cave, atoi(fields[4]));
 			if(survey) {
 				serie_set_survey(serie, survey);
@@ -227,7 +227,7 @@ void toporobot_parse_measure() {
 				abort();
 			}
 		}
-		
+
 		// allocate the memory for a measure
 		measure = (Measure*) malloc(sizeof (Measure));
 		measure->length = atof(fields[5]);
@@ -237,11 +237,11 @@ void toporobot_parse_measure() {
 		measure->right = atof(fields[9]);
 		measure->up = atof(fields[10]);
 		measure->down = atof(fields[11]);
-		
+
 		if(field_counter == 12 && strcmp(fields[12], "")!=0) {
 			strcpy(measure->comment, fields[12]);
 		}
-		
+
 		// seto pointer to serie
 		measure->serie = serie;
 

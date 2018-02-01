@@ -2,7 +2,7 @@
  * author: detrito
  * date: january 2016
  */
- 
+
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
@@ -23,15 +23,15 @@ typedef struct {
 	float azimuth;
 	float dip;
 	float length;
-	
+
 	// walls
 	float up;
 	float down;
 	float right;
 	float left;
-	
+
 	char comment [256];
-	
+
 	Serie *serie; // pointer to serie
 } Measure;
 
@@ -39,7 +39,7 @@ typedef struct {
 	// units
 	int unit_azimuth;
 	int unit_dip;
-	
+
 	// accuracy
 	float accuracy_length;
 	float accuracy_azimuth;
@@ -51,10 +51,10 @@ typedef struct {
 	int day;
 	int month;
 	int year;
-	
+
 	char name_person_measuring[32];
 	char name_person_drawing[32];
-	
+
 	// corrections
 	int auto_declination; // 0=manual; 1=auto
 	float correction_azimuth; // more often called declination
@@ -64,7 +64,7 @@ typedef struct {
 struct Serie{
 	int id_serie;	// survey id
 	char name[256];
-	
+
 	// temporary first and last point's links
 	int link_begin_serie;
 	int link_begin_measure;
@@ -90,9 +90,9 @@ typedef struct {
 
 typedef struct {
 	char name[256];
-	
+
 	Coordinate entrance; // coordinates of the first point of the first serie
-	
+
 	Survey **v_surveys; // vector of pointers to surveys
 	Serie **v_series; // vector of pointers to series
 	Code **v_codes; // vector of pointers to codes

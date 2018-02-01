@@ -2,7 +2,7 @@
  * author: detrito
  * date: january 2016
  */
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,11 +10,11 @@
 
 /*
  * cave functions
- */ 
+ */
 
 // serie
 
-void cave_push_serie(Cave *cave, Serie *serie) {	
+void cave_push_serie(Cave *cave, Serie *serie) {
 	// push pointer to serie to vector v_series
 	vector_push_back(cave->v_series, serie);
 }
@@ -55,7 +55,7 @@ void cave_set_code(Cave *cave, Code *code, int i) {
 
 void cave_create_links(Cave *cave) {
 	Serie *serie;
-	
+
 	// cycle series
 	for(int i=1; i<=cave_get_series_length(cave); i++) {
 		serie = cave_get_serie(cave, i);
@@ -89,7 +89,7 @@ void cave_close(Cave *cave) {
 	vector_free(cave->v_series);
 	vector_free(cave->v_codes);
 	vector_free(cave->v_surveys);
-	
+
 	free(cave);
 }
 

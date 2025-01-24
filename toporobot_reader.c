@@ -11,13 +11,13 @@
 #include "toporobot_reader.h"
 
 int c1 = 0;
+int line_counter = 0;
 int field_counter = 0;
 char fields[FIELD_ITEMS][FIELD_SIZE]={0x0}; // array of fields
 const char separator[] = "\t";	// tabulator as separator
 const char newline[] = "\n"; // tabulator as separator
 
 void toporobot_process_input_file(const char *filename) {
-	int i = 0; // line counter
 	char buf[256]={0x0}; // line bouffer
 
 	// read input file
@@ -26,10 +26,10 @@ void toporobot_process_input_file(const char *filename) {
 	// load a line in the buffer
 	if(file!=NULL) {
 		// read a line
-		while ( fgets(buf,sizeof(buf),file) != 0 ) {
-			i++;
+		while ( fgets(buf,sizeof(buf),file) != 0 ) { 
+			line_counter++;
 			if(verbose) {
-				printf("\n%d ",i);
+				printf("\n%d ",line_counter);
 			}
 
 			// parse this line, if the line is not empty
@@ -67,6 +67,14 @@ int toporobot_parse_line(char *buf) {
 		token=strtok('\0',separator);
 	}
 
+	// check if first ligne	is a tab delimited file with first value "-6"
+	if(line_counter==1) {
+		if( strcmp(fields[1],"-6") ) {
+			fprintf(stderr,"Error: the input file must be a Toporobot .Tab format.\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+		
 	c1 = atoi(fields[1]); // value of first column
 
 	switch (c1) {

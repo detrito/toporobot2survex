@@ -1,2 +1,10 @@
-# toporobot2survex
-Convert cave surveys from toporobot to survex
+toporobot2survex
+================
+
+Convert cave surveys from Toporobot to Survex
+
+The input file must be in Toporobot .Tab format [1].
+Toporobot .Text files [2] can not be processed.
+
+[1] http://www.geo.uzh.ch/~heller/toporobot/Francais/Fournisseurs/FormatsToporobot/Tab.html
+[2] http://www.geo.uzh.ch/~heller/toporobot/Francais/Fournisseurs/FormatsToporobot/Text.html

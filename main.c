@@ -25,7 +25,9 @@ Measure *measure;
 int verbose = 1;
 
 int print_help() {
-	printf("USE: " PROGRAM_NAME " [input toporobot file] [destination survex folder]\n");
+	printf("USE: " PROGRAM_NAME " [input Toporobot file] [destination Survex folder]\n");
+	printf("\n");
+	printf("[input toporobot file] must be a Toporobot .Tab file\n");
 	return 1;
 }
 

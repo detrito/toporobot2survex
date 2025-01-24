@@ -11,6 +11,10 @@
 #include "functions.h"
 #include "container.h"
 
+char buffer[1024*10];
+char filename[128];
+char foldername[128];
+
 int write_buffer(char *filename) {
 	init_output_file(filename); // clear file or create path
 

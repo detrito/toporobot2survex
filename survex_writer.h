@@ -15,10 +15,6 @@ extern Code *code;
 extern Survey *survey;
 extern Measure *measure;
 
-char buffer[1024*10];
-char filename[128];
-char foldername[128];
-
 int write_buffer(char *filename);
 void survex_write_cave(const char *folder);
 void survex_write_main();

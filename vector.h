@@ -22,7 +22,7 @@ extern int verbose;
  */
 #define vector_set_capacity(vec, size)   \
 if(verbose) {                            \
-	printf("Reallocating vector memoy: size %d", size); \
+	printf("Reallocating vector memory: size %d", size); \
 }                                        \
 do {                                     \
 	if(vec) {                            \
@@ -125,7 +125,7 @@ do { \
  * @brief vector_end - returns an iterator to one past the last element of the vector
  * @param vec - the vector
  * @return a pointer to one past the last element
- */	
+ */
 #define vector_end(vec) \
 	&((vec)[vector_size(vec)])
 
@@ -133,9 +133,9 @@ do { \
 /**
  * @brief vector_push_back - adds an element to the end of the vector
  * @param vec - the vector
- * @param value - the value to add 
+ * @param value - the value to add
  * @return void
- */	
+ */
 #ifdef LOGARITHMIC_GROWTH
 
 #define vector_push_back(vec, value) \

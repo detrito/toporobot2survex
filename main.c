@@ -46,8 +46,8 @@ int main (int argc, char *argv[]) {
 			if(verbose) {
 				printf("Processing input file...");
 			}
-			
-			// allocate memory for cave			
+
+			// allocate memory for cave
 			cave = (Cave*) malloc(sizeof (Cave)
 				+ MAX_SURVEY_POINTERS * sizeof(Survey*)
 				+ MAX_SERIE_POINTERS * sizeof(Serie*)
@@ -56,18 +56,18 @@ int main (int argc, char *argv[]) {
 
 			// read the cave in toporobot data format
 			toporobot_process_input_file(argv[1]);
-	
+
 			// TODO: create graph of links
 			//cave_create_links(cave);
-			
+
 			// write cave to survey files
 			if(verbose) {
 				printf("\nWriting to output files...\n");
 			}
-			
+
 			// write the cave in survex data format
-			survex_write_cave(argv[2]);			
-	
+			survex_write_cave(argv[2]);
+
 			// free all dynamical allocated memory
 			printf("Closing cave...\n");
 			cave_close(cave);
